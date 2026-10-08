@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Check Fallacies Options</title>
+		<meta name="color-scheme" content="dark light">
+		<link rel="stylesheet" href="options.css" defer="defer">
+	</head>
+	<body>
+		<main>
+			<p class="chapeau">Configure your <abbr>AI</abbr> backend here before using this extension:</p>
+			<div class="detail-row">
+				<p class="main">
+					<label for="typeSelector"><abbr>API</abbr> Type:</label>
+					<select id="typeSelector" name="type" class="detail-actions">
+						<option value="openai">OpenAI compatible</option>
+						<option value="ollama">Ollama native</option>
+					</select>
+				</p>
+				<p class="info">
+					Chose the type of <abbr>API</abbr> that your provider supports.
+					Other types will be added later.
+				</p>
+			</div>
+			<div class="detail-row">
+				<p class="main">
+					<label for="serverField"><abbr>API</abbr> endpoint:</label>
+					<input id="serverField" type="text" placeholder="e.g. http://localhost:1234/v1/" value="">
+				</p>
+				<p class="info">
+					This is the address used to communicate with the server.
+				</p>
+			</div>
+			<div class="detail-row">
+				<p class="main">
+					<label for="apiKeyField"><abbr>API</abbr> key:</label>
+					<input id="apiKeyField" type="text" placeholder="(optional)" value="">
+				</p>
+				<p class="info">
+					Local AI servers (like Ollama, LM Studio, etc.) usually do not need an <abbr>API</abbr> key.
+				</p>
+			</div>
+			<div class="detail-row">
+				<p class="main">
+					<label for="modelSelector">Model:</label>
+					<span class="select-button">
+						<input id="modelField" type="text" placeholder="click button to load →" value="">
+						<select id="modelSelector" name="model" class="model-list"></select>
+						<button id="modelsButton" title="reload"><span>Load models</span></button>
+					</span>
+				</p>
+				<p class="info">
+					Click on the “Reload” [⟲] button to fetch a list of available AI models.
+				</p>
+			</div>
+		</main>
+		<footer>
+			<p id="errorMessage" class="info">
+				Note: Test the connection before saving.
+			</p>
+			<p class="buttonLayout">
+				<button id="testButton" type="button">Test</button>
+				<button id="saveButton" type="submit" disabled>Save</button>
+			</p>
+		</footer>
+		<script src="options.js"></script>
+	</body>
+</html>

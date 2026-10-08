@@ -1,0 +1,57 @@
+{
+  "manifest_version": 3,
+  "name": "Check Fallacies",
+  "version": "0.1.1",
+  "description": "Check the article you are reading for fallacies, using your own AI.",
+  "homepage_url": "https://github.com/saschaleib/browser-extension_check-fallacies",
+  "icons": {
+		"16": "icons/check-16.png",
+		"32": "icons/check-32.png",
+		"48": "icons/check-48.png",
+		"96": "icons/check-96.png",
+		"128": "icons/check-128.png"
+	},
+  "permissions": ["activeTab", "scripting", "storage", "webRequest"],
+  "web_accessible_resources": [{
+    "resources": ["/assets/shortlist.md"],
+    "matches": ["<all_urls>"]
+  }],
+  "host_permissions": ["<all_urls>"],
+  "action": {
+    "default_title": "Check Fallacies"
+  },
+
+  "commands": {
+    "_execute_sidebar_action": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+F"
+      }
+    }
+  },
+
+  "background": {
+    "service_worker": "background.js",
+    "scripts": ["background.js"]
+  },
+  
+  "sidebar_action": {
+		"default_panel": "panel/panel.html",
+		"default_title": "Check Fallacies",
+		"default_icon": "icons/check.svg",
+		"open_at_install": false
+	},
+
+  "options_ui": {
+    "page": "options/options.html"
+  },
+
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "check-fallacies@ad.hominem.info",
+      "strict_min_version": "128.0",
+      "data_collection_permissions": {
+        "required": ["none"]
+      }
+    }
+  }
+}

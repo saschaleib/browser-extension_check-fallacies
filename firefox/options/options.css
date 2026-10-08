@@ -1,0 +1,96 @@
+/* Styles for the options panel
+ * for the "Check Fallacies" browser extension
+ * by Sascha Leib <ad@hominem.info>
+**/
+
+html, body {
+	font-family: sans-serif;
+	font-size: 15px;
+	background: light-dark(#FFF, #252428);
+	margin: 0; padding: 0 .5rem 0 0;
+}
+
+main {
+    .detail-row {
+        & {
+            border-top: 1px solid light-dark(#b7b6ba, #949297);
+            margin: 0;
+            padding: 1rem;
+        }
+        .main {
+            & {
+                display: flex;
+                justify-content: space-between;
+                margin: 0; padding: 0;
+            }
+            label {
+                color: light-dark(#180e30, #f2f0f8);
+            }
+			.select-button {
+				display: grid;
+				grid-template-columns: auto auto min-content;
+				column-gap: .25em;
+				min-width: 12rem;
+				height: 1.5em;
+			}
+        }
+        .info {
+            color: color-mix(in srgb, currentColor 69%, transparent);
+            padding: 1rem 0;
+            margin: 0;
+            border: none;
+        }
+        #modelsButton {
+        	& {
+       			width: 1.5em;
+         		overflow: hidden;
+           		padding: 0 .25em;
+         	}
+        	&::before {
+         		content: '⟲';
+           		display: block;
+              	margin-right: 2rem;
+         	}
+          	span {
+           		width: 0; height: 0;
+             	overflow: hidden;
+            }
+        }
+        #serverField, #apiKeyField {
+        	min-width: 16em;
+        }
+        #modelSelector {
+        	display: none;
+        }
+    }
+}
+
+footer {
+	& {
+		border-top: 1px solid light-dark(#b7b6ba, #949297);
+		margin: 0;
+		padding: .25rem 1rem;
+	}
+	#errorMessage {
+		& {
+			border: light-dark(#817F84, #949297) solid 0;
+			background-color: light-dark(#FFF, #252428);
+			border-left-width: 1.5pt;
+			padding: .25em .5em;
+			border-radius: .25em;
+		}
+		&.info {
+			border-color: light-dark(#044C9F, #A4CEFE);
+			background-color: light-dark(#ECF4FE, #072446);
+		}
+		&.error {
+			border-color: light-dark(#B7102C, #FC7D92);
+			background-color: light-dark(#FFE6EA, #4B0B16);	
+		}
+	}
+	p.buttonLayout {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		justify-items: center;
+	} 
+}
