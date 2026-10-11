@@ -64,11 +64,11 @@
     lang: document.documentElement.lang || null,
   };
 
-  // 1. An explicit user selection always wins.
-  const selection = String(getSelection() || '').trim();
+  // 1. An explicit user selection always wins. (disabled for now!)
+  /* const selection = String(getSelection() || '').trim();
   if (selection) {
     return { ...meta, source: 'selection', text: selection, length: selection.length };
-  }
+  } */
 
   // 2. Readability. It mutates the DOM it is given, so always hand it a clone.
 

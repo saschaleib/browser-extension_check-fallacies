@@ -62,7 +62,17 @@ const $opt = {
 				if (result.data.model.trim() !== '') {
 					document.getElementById('modelField').value = result.data.model;
 				}
-				
+
+				// Send key:
+				if (result.data.sendKey !== '') {
+					const keySel = document.getElementById('keySelector');
+					for (var i = 0; i < keySel.options.length; i++) {
+						if (keySel.options[i].text== ( result.data.sendKey|| 'Ctrl').trim ()) {
+							keySel.options[i].selected = true;
+						}
+					}
+				}
+
 			} else {
 				$opt.setInfo('error', result._error);
 			}
@@ -226,6 +236,7 @@ const $opt = {
 			server: '',
 			model: '',
 			apiKey: '',
+			sendKey: '',
 			_valid: false
 		}
 
@@ -245,6 +256,10 @@ const $opt = {
 				r.model = document.getElementById("modelField").value;
 			}
 	
+			/* sendKey: */
+			var keySelector = document.getElementById("keySelector");
+			r.sendKey = keySelector.options[keySelector.selectedIndex].value;
+
 			// TODO: Check for validity!
 			r._valid = true;
 			// add error message to _error, if validation fails.

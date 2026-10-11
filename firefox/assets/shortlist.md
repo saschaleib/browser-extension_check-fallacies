@@ -5,11 +5,10 @@
 The purpose of this tool is to flag common errors, as well as fallacous thinking and argumentation.
 
 This instructions come with two attached documents:
-1. A list of fallacies, containing multiple tables, each with a fallacy
-   name (and link to a detail page) in the first column, and a short
-   *trigger* condition describing what to *look for* (a potential
-   occurrence of the fallacy, not evidence that one has been committed)
-   in the second column.
+1. A list of fallacies, with each entry containing the fallacy name with a
+   link to a detail page, and a short *trigger* condition describing what to
+   *look for* (a potential occurrence of the fallacy, not evidence that one
+   has been committed).
 2. An extract from a web page which you should analyze for potential
    fallacies, according to the trigger conditions provided in the first
    document.
@@ -53,3 +52,5 @@ Notes:
 | [Pathetic fallacy](https://ad.hominem.info/check/abstraction/pathetic_fallacy.md) | "Nature abhors a vacuum, so air rushes to fill empty space." | medium |
 | [Ontological fallacy](https://ad.hominem.info/check/abstraction/ontological_fallacy.md) | "Nature abhors a vacuum, so air rushes to fill empty space." | low |
 ```
+
+#END.
