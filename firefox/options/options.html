@@ -13,8 +13,7 @@
 				<p class="main">
 					<label for="typeSelector"><abbr>API</abbr> Type:</label>
 					<select id="typeSelector" name="type" class="detail-actions">
-						<option value="openai">OpenAI compatible</option>
-						<option value="ollama">Ollama native</option>
+						<option value="lmstudio">LM Studio</option>
 					</select>
 				</p>
 				<p class="info">
@@ -46,7 +45,7 @@
 					<span class="select-button">
 						<input id="modelField" type="text" placeholder="click button to load →" value="">
 						<select id="modelSelector" name="model" class="model-list"></select>
-						<button id="modelsButton" title="reload"><span>Load models</span></button>
+						<button id="modelsButton" title="reload" data-popup="modelSelector" data-field="modelField"><span>Load models</span></button>
 					</span>
 				</p>
 				<p class="info">
@@ -55,12 +54,23 @@
 			</div>
 			<div class="detail-row">
 				<p class="main">
+					<label for="decisionModelSelector">Decision model:</label>
+					<span class="select-button">
+						<input id="decisionModelField" type="text" placeholder="(optional)" value="">
+						<select id="decisionModelSelector" name="decisionModel" class="model-list"></select>
+						<button id="decisionModelsButton" title="reload" data-popup="decisionModelSelector" data-field="decisionModelField"><span>Load models</span></button>
+					</span>
+				</p>
+				<p class="info">
+					Alternative model for decision-making prompts.
+				</p>
+			</div>
+			<div class="detail-row">
+				<p class="main">
 					<label for="keySelector">Send message&nbsp;by:</label>
 					<select id="keySelector" name="type" class="detail-actions">
 						<option value="none">Enter</option>
 						<option value="ctrl" selected>Ctrl-Enter</option>
-						<option value="alt">Alt-Enter</option>
-						<option value="shift">Shift-Enter</option>
 					</select>
 				</p>
 				<p class="info">

@@ -11,21 +11,21 @@ html, body {
 }
 
 main {
-    .detail-row {
-        & {
-            border-top: 1px solid light-dark(#b7b6ba, #949297);
-            margin: 0;
-            padding: 1rem;
-        }
-        .main {
-            & {
-                display: flex;
-                justify-content: space-between;
-                margin: 0; padding: 0;
-            }
-            label {
-                color: light-dark(#180e30, #f2f0f8);
-            }
+	 .detail-row {
+			& {
+				border-top: 1px solid light-dark(#b7b6ba, #949297);
+				margin: 0;
+				padding: 1rem;
+			}
+			.main {
+				& {
+					display: flex;
+					justify-content: space-between;
+					margin: 0; padding: 0;
+				}
+				label {
+					color: light-dark(#180e30, #f2f0f8);
+				}
 			.select-button {
 				display: grid;
 				grid-template-columns: auto auto min-content;
@@ -33,36 +33,36 @@ main {
 				min-width: 12rem;
 				height: 1.5em;
 			}
-        }
-        .info {
-            color: color-mix(in srgb, currentColor 69%, transparent);
-            padding: 1rem 0;
-            margin: 0;
-            border: none;
-        }
-        #modelsButton {
-        	& {
-       			width: 1.5em;
-         		overflow: hidden;
-           		padding: 0 .25em;
-         	}
-        	&::before {
-         		content: '⟲';
-           		display: block;
-              	margin-right: 2rem;
-         	}
-          	span {
-           		width: 0; height: 0;
-             	overflow: hidden;
-            }
-        }
-        #serverField, #apiKeyField {
-        	min-width: 16em;
-        }
-        #modelSelector {
-        	display: none;
-        }
-    }
+			}
+			.info {
+				color: color-mix(in srgb, currentColor 69%, transparent);
+				padding: 1rem 0;
+				margin: 0;
+				border: none;
+			}
+			#modelsButton, #decisionModelsButton {
+				& {
+					width: 1.5em;
+					overflow: hidden;
+					padding: 0 .25em;
+				}
+				&::before {
+					content: '⟲';
+					display: block;
+					margin-right: 2rem;
+				}
+				span {
+					width: 0; height: 0;
+					overflow: hidden;
+				}
+			}
+			#serverField, #apiKeyField {
+				min-width: 16em;
+			}
+			#modelSelector {
+				display: none;
+			}
+	 }
 }
 
 footer {

@@ -4,6 +4,8 @@
  * @author	 Sascha Leib <ad@hominem.info>
  */
 
+/* The following functions are taken from the jMini toolbox: */
+
 /* removes all child nodes of the element */
 /* parent object: HTMLElement */
 HTMLElement.prototype.empty = function() {

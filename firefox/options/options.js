@@ -63,6 +63,11 @@ const $opt = {
 					document.getElementById('modelField').value = result.data.model;
 				}
 
+				// decisions model ID
+				if (result.data.decModel.trim() !== '') {
+					document.getElementById('decisionModelField').value = result.data.decModel;
+				}
+
 				// Send key:
 				if (result.data.sendKey !== '') {
 					const keySel = document.getElementById('keySelector');
@@ -82,19 +87,40 @@ const $opt = {
 	onModelsButtonClick: function(e) {
 		console.info("$opt.onModelsButtonClick()");
 		
+		const trg = ( e.target || e.srcElement );
+
+		// find the model selection popup:
+		const popupId = ( trg ? trg.getAttribute('data-popup') : null);
+		var modelSel = null;
+		if (popupId && popupId !== '') {
+			modelSel = document.getElementById(popupId);
+		};
+		if (!modelSel) {
+			console.log(`Could not find popup with ID ${popupId}.`);
+			return;
+		}
+		// find the model field:
+		const fieldId = ( trg ? trg.getAttribute('data-field') : null);
+		var modelField = null;
+		if (fieldId && fieldId !== '') {
+			modelField = document.getElementById(popupId);
+		};
+		if (!modelField) {
+			console.log(`Could not find field with ID ${modelField}.`);
+			return;
+		}
+
 		const data = $opt._readFormData(true);
 		if (data._valid) {
 
-			// get the required elements:
-			const modelSel = document.getElementById('modelSelector');
-			const modelText = document.getElementById('modelField');
-			const oldVal = modelText.value;
+			// get the old valud first:
+			const oldVal = modelField.value;
 			
 			// clear the existing list:
 			while (modelSel.firstChild) {
 				modelSel.removeChild(modelSel.lastChild);
 			}
-			
+
 			// load the list of models:
 			(async () => {
 				const result = await $opt._getModelsList(data);
@@ -123,11 +149,11 @@ const $opt = {
 					// if not found, select the empty item:
 					if (!found) {
 						empty.setAttribute('selected', 'selected');
-						modelText.value = ''; // also clear the text field
+						modelField.value = ''; // also clear the text field
 					}
 
 					// hide the text field and instead make the popup visible:
-					modelText.style.display = 'none';
+					modelField.style.display = 'none';
 					modelSel.style.display = 'initial';
 
 				} else {
@@ -235,6 +261,7 @@ const $opt = {
 			type: '',
 			server: '',
 			model: '',
+			decModel: '',
 			apiKey: '',
 			sendKey: '',
 			_valid: false
@@ -254,6 +281,7 @@ const $opt = {
 			/* Model: */
 			if (!skipModel) {
 				r.model = document.getElementById("modelField").value;
+				r.decModel = document.getElementById("decisionModelField").value;
 			}
 	
 			/* sendKey: */
