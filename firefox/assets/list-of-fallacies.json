@@ -1,351 +1,369 @@
 [{
-	"id": "anthropomorphisation",
-	"n": "Anthropomorphisation",
-	"l": "abstraction/anthropomorphisation",
-	"t": "Specifically *human* traits (emotion, intention, character) attributed to a non-human or abstract entity."
-},{
-	"id": "pathetic",
-	"n": "Pathetic fallacy",
-	"l": "abstraction/pathetic_fallacy",
-	"t": "Human emotions or moral attitudes attributed to inanimate objects, nature, or abstract systems (“the market fears”, “nature abhors”, “the economy punishes”) as if factual (specialized form of Anthropomorphisation)."
-},{
-	"id": "objectification",
-	"n": "Objectification",
-	"l": "abstraction/objectification",
-	"t": "A *person* – not a concept – is treated as a thing, tool, or mere function ('resources', dehumanizing language), or assumed in reasoning to behave like predictable, passive objects."
-},{
-	"id": "ontological",
-	"n": "Ontological fallacy",
-	"l": "abstraction/ontological_fallacy",
-	"t": "Existence inferred from a term, definition, or conceivability; absence reified into an independent entity."
-},{
-	"id": "semiotic",
-	"n": "Semiotic fallacy",
-	"l": "abstraction/semiotic_fallacy",
-	"t": "A *symbol, sign, model or metric* is conflated with the *thing it stands for*."
-},{
-	"id": "procrustean",
-	"n": "Procrustean fallacy",
-	"l": "abstraction/procrustean",
-	"t": "*Reality* (data, processes, objects) is actively manipulated or forced to fit a pre-existing *model*, framework, or theory – rather than adapting the model to reality."
-},{
-	"id": "hypostatization",
-	"n": "Hypostatization",
-	"l": "abstraction/hypostatization",
-	"t": "An abstract or collective noun (the market, society, history) is treated as an agent with intentions, actions, or responsibility, beyond conventional shorthand (“the company announced” → OK; “the market punished investors” → flag)."
-},{
-	"id": "etymological",
-	"n": "Etymological fallacy",
-	"l": "ambiguity/etymological_fallacy",
-	"t": "A word’s *original or etymological* meaning is treated as authoritative for its current use – or its *modern* meaning is projected back onto older usage – even though the term’s meaning has shifted over time."
-},{
-	"id": "motte-and-bailey",
-	"n": "Motte-and-bailey fallacy",
-	"l": "ambiguity/motte-and-bailey",
-	"t": "A *strong* and a *weak* version of a position are conflated under one term, and arguments are moved between them as if they were the same claim – e.g., retreating from an attacked strong claim to a defensible weak one without acknowledging the switch."
-},{
-	"id": "generic_generalization",
-	"n": "Generic generalization",
-	"l": "ambiguity/syntactic/generic_generalization",
-	"t": "An unquantified *generic* statement (“Xs are Y”) is used in an argument as if it were a *universal* claim about every member of the class – or a universal claim is silently weakened to dodge counterexamples."
-},{
-	"id": "syntactic",
-	"n": "Syntactic ambiguity",
-	"l": "ambiguity/syntactic/index",
-	"t": "A sentence’s grammatical structure allows two or more readings with different meanings, and the argument depends on one of them (e.g., ambiguous attachment, scope, or reference). If the ambiguity is specifically an unquantified “Xs are Y” statement, use Generic generalization."
-},{
-	"id": "intensional",
-	"n": "Intensional fallacy",
-	"l": "ambiguity/intensional_fallacy",
-	"t": "A term is swapped for another co-referring term referring to the same object, even though the two terms carry different associated meanings or modes of reference (e.g., “morning star” vs. “evening star”)."
-},{
-	"id": "false_cause",
-	"n": "False cause fallacy",
-	"l": "causality/false_cause",
-	"t": "*Causation* inferred from mere *co-occurrence* or *temporal sequence* of two phenomena – without independent evidence for a causal mechanism."
-},{
-	"id": "teleological",
-	"n": "Teleological fallacy",
-	"l": "causality/teleological_fallacy",
-	"t": "A natural process, system, or event described in terms of *purpose*, *goal*, or *design* as if an agent intended that outcome – conflating causal *effect* with intentional *aim*."
-},{
-	"id": "accident",
-	"n": "Accident fallacy",
-	"l": "generalization/accident_fallacy",
-	"t": "A *general rule* (law, principle, norm) applied rigidly to a *specific case* where special circumstances would warrant an exception."
-},{
-	"id": "hasty_generalization",
-	"n": "Hasty generalization",
-	"l": "generalization/hasty",
-	"t": "A *broad or universal rule* inferred from too few (or unrepresentative) instances of a class."
-},{
-	"id": "mereological",
-	"n": "Mereological fallacy",
-	"l": "generalization/mereological_fallacy",
-	"t": "A property of a system is attributed to a component, or properties of components are assumed to transfer unchanged to the system, ignoring emergent interactions."
-},{
-	"id": "naturalistic",
-	"n": "Naturalistic fallacy",
-	"l": "generalization/naturalistic_fallacy",
-	"t": "A prescriptive conclusion (*what ought to be*) inferred directly from a descriptive premise (*what is*), or vice versa – without independent justification for the normative leap."
-},{
-	"id": "overwhelming_exception",
-	"n": "Overwhelming exception",
-	"l": "generalization/overwhelming_exception",
-	"t": "A *general rule or claim* is stated together with so many or so broad *exceptions* that the original statement is left with little or no meaningful scope, yet is presented as if it were still substantially valid."
-},{
-	"id": "affirming_a_disjunct",
-	"n": "Affirming a disjunct",
-	"l": "logic/formal_fallacies/affirming_a_disjunct",
-	"t": "One option of an *inclusive* disjunction (“A or B”) is affirmed, and the other is concluded to be false."
-},{
-	"id": "denying_the_antecedent",
-	"n": "Denying the antecedent",
-	"l": "logic/formal_fallacies/denying_the_antecedent",
-	"t": "A conditional (“If P then Q”) is misused: because P does not hold, Q is denied – even though Q could have another cause. (Checkable form: “If P → Q; not-P → ∴ not-Q”)."
-},{
-	"id": "denying_a_conjunct",
-	"n": "Denying a conjunct",
-	"l": "logic/formal_fallacies/denying_a_conjunct",
-	"t": "One option of a *negated conjunction* (“not both A and B”) is denied, and the other is concluded to be true."
-},{
-	"id": "affirming_the_consequent",
-	"n": "Affirming the consequent",
-	"l": "logic/formal_fallacies/affirming_the_consequent",
-	"t": "A conditional (“If P then Q”) is misused: because Q holds, P is affirmed – even though Q could have another cause. (Checkable form: “If P → Q; Q → ∴ P”)."
-},{
-	"id": "affirmative_conclusion_from_negative_premise",
-	"n": "Affirmative conclusion from a negative premise",
-	"l": "logic/formal_fallacies/affirmative_conclusion_from_negative_premise",
-	"t": "In a formal categorical inference (especially a syllogism), an *affirmative* conclusion (“all … are …”, “some … are …”) is inferred although at least one premise is *negative* (“no …”, “some … are not”)."
-},{
-	"id": "negative_conclusion_from_affirmative_premises",
-	"n": "Negative conclusion from affirmative premises",
-	"l": "logic/formal_fallacies/negative_conclusion_from_affirmative_premises",
-	"t": "In a formal categorical inference (especially a syllogism), a *negative* conclusion (“no …”, “some … are not”) is inferred although all premises are *affirmative* (“all … are …”, “some … are …”)."
-},{
-	"id": "exclusive_premises",
-	"n": "Fallacy of exclusive premises",
-	"l": "logic/formal_fallacies/exclusive_premises",
-	"t": "In a standard categorical syllogism or comparable form, *all* premises are negative, yet a conclusion is still derived."
-},{
-	"id": "undistributed_middle",
-	"n": "Undistributed middle",
-	"l": "logic/formal_fallacies/fallacies_of_distribution/undistributed_middle",
-	"t": "In a formal categorical inference (especially a syllogism), the *middle term*, which connects the premises, refers only to a part of its class in all occurrences (typically as predicate of “All X are M”, or within an unqualified “Some …” statement), yet is still used as if it can connect the other terms. (Checkable form: “Some C are M; All P are M → ∴ …P, C…”.)"
-},{
-	"id": "illicit_process",
-	"n": "Illicit process",
-	"l": "logic/formal_fallacies/fallacies_of_distribution/illicit_process",
-	"t": "In a formal categorical inference (especially a syllogism), the major or minor term occurs in a distributed position (whole-class reference) in the conclusion, yet only in an undistributed position in its premise – i.e., the conclusion makes a broader claim about that class than the premise does. (Checkable form: “All P are M; All M are S → ∴ All S are P” – “S” is broader in the conclusion.)"
-},{
-	"id": "fallacy_of_distribution",
-	"n": "Fallacies of distribution",
-	"l": "logic/formal_fallacies/fallacies_of_distribution/index",
-	"t": "A categorical inference (especially a syllogism) in which the *distribution* of terms is evidently mishandled but does not clearly match either specific rule above – e.g., several distribution errors at once, or a non-standard form where the middle/major/minor roles are hard to assign (enthymemes with elided premises, multi-premise chains). Fallback entry: if the conditions for *undistributed middle* or *illicit process* are met, use those instead."
-},{
-	"id": "ambiguous_middle",
-	"n": "Ambiguous middle term",
-	"l": "logic/formal_fallacies/four-term_fallacy/ambiguous_middle",
-	"t": "In a syllogism, the middle term shifts meaning between premises (equivocation), so it fails to link the other two terms. (A specific form of the four-term fallacy.)"
-},{
-	"id": "four-term",
-	"n": "Four-term fallacy",
-	"l": "logic/formal_fallacies/four-term_fallacy/index",
-	"t": "A syllogism contains four distinct terms instead of exactly three – often because a term is used in two different meanings (equivocation). Count meanings, not words."
-},{
-	"id": "circular_reasoning",
-	"n": "Circular reasoning",
-	"l": "logic/formal_fallacies/circular_reasoning",
-	"t": "A conclusion is supported by a premise that directly or indirectly depends on that same conclusion, including through a chain of claims that loops back to it."
-},{
-	"id": "existential",
-	"n": "Existential fallacy",
-	"l": "logic/formal_fallacies/existential",
-	"t": "An *existential* conclusion (“some A are B”) drawn from *universal* premises (“all A are B”) that do not establish the class actually exists (vacuously true if A is empty)."
-},{
-	"id": "division",
-	"n": "Fallacy of division",
-	"l": "logic/emergence/division",
-	"t": "A property of the *whole* is inferred to hold for its *parts* (or a group-level property for individual members) – as if the parts must share the whole's property, without checking whether it is *emergent*."
-},{
-	"id": "composition",
-	"n": "Fallacy of composition",
-	"l": "logic/emergence/composition",
-	"t": "A property of the *parts* (components, members) of a system is inferred to hold for the *whole* as well – as if the whole must be the sum of its parts, without checking for emergent or resultant properties."
-},{
-	"id": "epistemic",
-	"n": "Epistemic fallacy",
-	"l": "knowledge/epistemic_fallacy",
-	"t": "*Knowledge* (or its absence) is equated with *existence*: “we have no evidence for X, therefore X does not exist” – or only what is measurable/knowable is regarded as real, and the limits of knowledge are treated as the limits of reality."
-},{
-	"id": "eliminative_induction",
-	"n": "Fallacy of eliminative induction",
-	"l": "knowledge/eliminative_induction",
-	"t": "A conclusion reached by *eliminating alternatives* is stated as *certain* rather than merely probable, or the initial set of alternatives is not (or cannot be) exhaustive."
-},{
-	"id": "ignorance",
-	"n": "Argument from ignorance",
-	"l": "knowledge/ignorance",
-	"t": "A conclusion about a claim's *truth or existence* is drawn from the *absence of evidence* for or against it – i.e., the *burden of proof* is reversed (e.g., “no one has disproven X, so X is true”; “no one has proven X, so X is false”; “no complaints, so all is well”)."
-},{
-	"id": "ecological",
-	"n": "Ecological fallacy",
-	"l": "knowledge/ecological_fallacy",
-	"t": "A *statistical indicator* (average, rate, share) valid for a *group or population as a whole* is transferred to a *lower level* (subgroup or individual) – as if the group-level figure applied to the parts."
-},{
-	"id": "authority",
-	"n": "Appeal to authority",
-	"l": "relevance/authority/index",
-	"t": "A claim is supported or rejected mainly because of the source’s status or expertise, rather than the evidence itself."
-},{
-	"id": "false_authority",
-	"n": "Appeal to a false authority",
-	"l": "relevance/authority/false_authority/index",
-	"t": "The cited source is not a valid authority for the claim: no relevant expertise, anonymous/unverifiable, misquoted, fabricated, or from a field where the claim is contested."
-},{
-	"id": "fallacy-fallacy",
-	"n": "Fallacy-fallacy",
-	"l": "relevance/fallacy-fallacy",
-	"t": "An *invalid or refuted argument* for a claim is used as evidence that the *claim itself is false* (conflating bad reasoning with a false conclusion)."
-},{
-	"id": "false_dilemma",
-	"n": "False dilemma",
-	"l": "relevance/false_dilemma",
-	"t": "A situation is presented – explicitly or by *redefining* a middle position into one of two poles – as having only a limited number of options when more exist."
-},{
-	"id": "appeal_to_tradition",
-	"n": "Appeal to tradition",
-	"l": "relevance/authority/false_authority/appeal_to_tradition",
-	"t": "A practice or belief defended primarily because it is *old, customary, or “the way things have always been done”* – duration used as proof of correctness."
-},{
-	"id": "bandwagon",
-	"n": "Bandwagon fallacy",
-	"l": "relevance/authority/false_authority/bandwagon_fallacy",
-	"t": "A position supported or rejected primarily because *many people* hold it, do it, or find it popular – majority size used as evidence of truth."
-},{
-	"id": "honour_by_association",
-	"n": "Honour by association",
-	"l": "relevance/authority/false_authority/honour_by_association",
-	"t": "Credibility or acceptance granted *solely* through positive association with a respected person, brand, or institution – no independent evaluation of the thing itself."
-},{
-	"id": "false_analogy",
-	"n": "False analogy",
-	"l": "relevance/false_analogy",
-	"t": "A property of one thing is transferred to another based on their *similarity in other respects*, without establishing that this specific property follows from those shared features."
-},{
-	"id": "petitio_principii",
-	"n": "Petitio principii",
-	"l": "relevance/petitio_principii",
-	"t": "A premise silently assumes the conclusion, often by restating it in different words, changing scope, or relying on an unexamined assumption that is itself in dispute."
-},{
-	"id": "appeal_to_consequences",
-	"n": "Appeal to consequences",
-	"l": "relevance/appeal_to_consequences",
-	"t": "A *factual claim* is argued to be true or false from the *consequences* it would have if it were true or false (“if X is true, bad things follow – so X is false”; “if X were false, good things would follow – so X is true”."
-},{
-	"id": "wishful_thinking",
-	"n": "Wishful thinking",
-	"l": "relevance/wishful_thinking/index",
-	"t": "Accepting a claim as true, or treating weak evidence as decisive, simply because truth of the claim is *desirable*."
-},{
-	"id": "arrival",
-	"n": "Arrival fallacy",
-	"l": "relevance/wishful_thinking/arrival_fallacy",
-	"t": "A *current problem* is dismissed or deferred based on an *expected future event* that has little factual basis for resolving it. Special form of ”wishful thinking”."
-},{
-	"id": "slippery_slope",
-	"n": "Slippery slope",
-	"l": "relevance/slippery_slope",
-	"t": "Accepting a position is presented as *inevitably* triggering a chain of further (usually extreme) positions, without evidence that each step follows from the previous one."
-},{
-	"id": "name-calling",
-	"n": "Name-calling",
-	"l": "ad_hominem/name-calling",
-	"t": "Argument dismissed by *insulting*, *berating* or applying derogatory labels to the speaker rather than engaging with their reasoning."
-},{
-	"id": "tu_quoque",
-	"n": "Tu quoque",
-	"l": "ad_hominem/tu_quoque",
-	"t": "An accusation of *hypocrisy*: “you do it too” – used to dismiss a valid point because the arguer doesn't practise what they preach."
-},{
-	"id": "nutpicking",
-	"n": "Nutpicking",
-	"l": "ad_hominem/nutpicking",
-	"t": "A *group* is discredited by selectively highlighting its most *extreme*, *fringe*, or *absurd* members as if they were representative of the whole."
-},{
-	"id": "guilt_by_association",
-	"n": "Guilt by association",
-	"l": "ad_hominem/guilt_by_association",
-	"t": "A person or group is *discredited* because of their associations, affiliations, or connections – not because of the argument itself."
-},{
-	"id": "self-aggrandizement",
-	"n": "Self-aggrandizement",
-	"l": "ad_hominem/self-aggrandizement",
-	"t": "A speaker elevates themselves or their in-group with an *unearned positive label* to implicitly diminish the opponent's capacity or qualification."
-},{
-	"id": "appeal_to_motive",
-	"n": "Appeal to motive",
-	"l": "ad_hominem/appeal_to_motive",
-	"t": "A claim is dismissed by attributing an *external motive* (interest, bias, emotion) to the *person making it* – explicitly or implied – instead of addressing the substance of the argument."
-},{
-	"id": "ad_feminam",
-	"n": "Ad feminam",
-	"l": "ad_hominem/ad_feminam",
-	"t": "Argument dismissed by referencing the speaker's *female sex* – via stereotypes (irrational, emotional), biological insinuations (hormones), or gendered knowledge claims."
-},{
-	"id": "ad_virum",
-	"n": "Ad virum",
-	"l": "ad_hominem/ad_virum",
-	"t": "Argument dismissed by referencing the speaker's *male sex* – via stereotypes (privileged, aggressive), demographic identity claims, or blanket exclusion of men from a topic."
-},{
-	"id": "ad_hominem",
-	"n": "Ad hominem",
-	"l": "ad_hominem/index",
-	"t": "An argument's validity is challenged or undermined by attacking the *person* who makes it – their character, identity, motives, associations, or behaviour – instead of addressing the substance of the claim."
-},{
-	"id": "whataboutism",
-	"n": "Whataboutism",
-	"l": "rhetoric/whataboutism",
-	"t": "A specific criticism is deflected by pointing to *other groups'* similar or worse actions, with the effect of blocking any resolution of the original issue."
-},{
-	"id": "straw_man",
-	"n": "Strawman argument",
-	"l": "rhetoric/straw_man",
-	"t": "The opponent's argument or position is *replaced* with a distorted, oversimplified, or fabricated version, and that weaker version is refuted as if it were the original claim."
-},{
-	"id": "appeal_to_emotion",
-	"n": "Appeal to Emotion",
-	"l": "rhetoric/appeal_to_emotion/index",
-	"t": "A position is supported primarily or exclusively by an appeal to the audience's emotions (pity, fear, outrage, guilt, hope, pride, flattery) rather than by factual arguments."
-},{
-	"id": "argument_by_emotion",
-	"n": "Argument by Emotion",
-	"l": "rhetoric/appeal_to_emotion/argument_by_emotion",
-	"t": "The speaker's *own* emotional state (hurt, sadness, anger) is used as *pressure* – often inducing guilt – to make the counterpart *concede* or drop a point, rather than as an argument. Specialised form of “appeal to emotion”."
-},{
-	"id": "fear-mongering",
-	"n": "Fear-mongering",
-	"l": "rhetoric/appeal_to_emotion/fear-mongering",
-	"t": "A *threat* (real or exaggerated) is framed in *alarmist, fear-inducing terms* that create urgency and present one specific response as the only way to avoid disaster – implicitly equating *deliberation, proportionality, or alternatives* with accepting the risk. Specialised form of “appeal to emotion”."
-},{
-	"id": "argumentum_ad_baculum",
-	"n": "Argumentum ad baculum",
-	"l": "rhetoric/argumentum_ad_baculum",
-	"t": "A *position of power* is used to make the counterpart *concede*: an explicit or implicit *threat of negative consequences* (harm, punishment, loss of benefits, social damage) is used *instead of reasons*."
-},{
-	"id": "no_true_scotsman",
-	"n": "No true Scotsman",
-	"l": "rhetoric/no_true_scotsman",
-	"t": "A universal claim about a *group* is rescued from a counterexample by redefining membership with an *ad hoc* purity criterion (“no *true/real* X…”)."
-},{
-	"id": "gish-gallop",
-	"n": "Gish gallop",
-	"l": "rhetoric/gish-gallop",
-	"t": "A large number of claims, arguments, or citations presented simultaneously (or in rapid succession) to *overwhelm* the capacity for individual evaluation and rebuttal (of a live opponent, an audience, or subsequent fact-checkers) – quantity over quality."
-},{
-	"id": "tone_policing",
-	"n": "Tone policing",
-	"l": "rhetoric/tone_policing",
-	"t": "An argument's *content* is dismissed or invalidated because of *how* it was expressed – emotional intensity, volume, perceived rudeness – instead of engaging with the substance."
+	"id": "general",
+	"title": "General fallacies",
+	"desc": "Should always be active.",
+	"opt": ["checked", "disabled"],
+	"list": [{
+		"id": "Anthropomorphisation",
+		"n": "Anthropomorphisation",
+		"l": "abstraction/anthropomorphisation",
+		"t": "Specifically *human* traits (emotion, intention, character) attributed to a non-human or abstract entity."
+	}, {
+		"id": "Pathetic",
+		"n": "Pathetic fallacy",
+		"l": "abstraction/pathetic_fallacy",
+		"t": "Human emotions or moral attitudes attributed to inanimate objects, nature, or abstract systems (“the market fears”, “nature abhors”, “the economy punishes”) as if factual (specialized form of Anthropomorphisation)."
+	}, {
+		"id": "Objectification",
+		"n": "Objectification",
+		"l": "abstraction/objectification",
+		"t": "A *person* – not a concept – is treated as a thing, tool, or mere function ('resources', dehumanizing language), or assumed in reasoning to behave like predictable, passive objects."
+	}, {
+		"id": "Ontological",
+		"n": "Ontological fallacy",
+		"l": "abstraction/ontological_fallacy",
+		"t": "Existence inferred from a term, definition, or conceivability; absence reified into an independent entity."
+	}, {
+		"id": "Semiotic",
+		"n": "Semiotic fallacy",
+		"l": "abstraction/semiotic_fallacy",
+		"t": "A *symbol, sign, model or metric* is conflated with the *thing it stands for*."
+	}, {
+		"id": "Procrustean",
+		"n": "Procrustean fallacy",
+		"l": "abstraction/procrustean",
+		"t": "*Reality* (data, processes, objects) is actively manipulated or forced to fit a pre-existing *model*, framework, or theory – rather than adapting the model to reality."
+	}, {
+		"id": "Hypostatization",
+		"n": "Hypostatization",
+		"l": "abstraction/hypostatization",
+		"t": "An abstract or collective noun (the market, society, history) is treated as an agent with intentions, actions, or responsibility, beyond conventional shorthand (“the company announced” → OK; “the market punished investors” → flag)."
+	}, {
+		"id": "Etymological",
+		"n": "Etymological fallacy",
+		"l": "ambiguity/etymological_fallacy",
+		"t": "A word’s *original or etymological* meaning is treated as authoritative for its current use – or its *modern* meaning is projected back onto older usage – even though the term’s meaning has shifted over time."
+	}, {
+		"id": "MotteBailey",
+		"n": "Motte-and-bailey fallacy",
+		"l": "ambiguity/motte-and-bailey",
+		"t": "A *strong* and a *weak* version of a position are conflated under one term, and arguments are moved between them as if they were the same claim – e.g., retreating from an attacked strong claim to a defensible weak one without acknowledging the switch."
+	}, {
+		"id": "GenericGeneralization",
+		"n": "Generic generalization",
+		"l": "ambiguity/syntactic/generic_generalization",
+		"t": "An unquantified *generic* statement (“Xs are Y”) is used in an argument as if it were a *universal* claim about every member of the class – or a universal claim is silently weakened to dodge counterexamples."
+	}, {
+		"id": "Syntactic",
+		"n": "Syntactic ambiguity",
+		"l": "ambiguity/syntactic/index",
+		"t": "A sentence’s grammatical structure allows two or more readings with different meanings, and the argument depends on one of them (e.g., ambiguous attachment, scope, or reference). If the ambiguity is specifically an unquantified “Xs are Y” statement, use Generic generalization."
+	}, {
+		"id": "Intensional",
+		"n": "Intensional fallacy",
+		"l": "ambiguity/intensional_fallacy",
+		"t": "A term is swapped for another co-referring term referring to the same object, even though the two terms carry different associated meanings or modes of reference (e.g., “morning star” vs. “evening star”)."
+	}, {
+		"id": "FalseCause",
+		"n": "False cause fallacy",
+		"l": "causality/false_cause",
+		"t": "*Causation* inferred from mere *co-occurrence* or *temporal sequence* of two phenomena – without independent evidence for a causal mechanism."
+	}, {
+		"id": "Teleological",
+		"n": "Teleological fallacy",
+		"l": "causality/teleological_fallacy",
+		"t": "A natural process, system, or event described in terms of *purpose*, *goal*, or *design* as if an agent intended that outcome – conflating causal *effect* with intentional *aim*."
+	}, {
+		"id": "Accident",
+		"n": "Accident fallacy",
+		"l": "generalization/accident_fallacy",
+		"t": "A *general rule* (law, principle, norm) applied rigidly to a *specific case* where special circumstances would warrant an exception."
+	}, {
+		"id": "HastyGeneralization",
+		"n": "Hasty generalization",
+		"l": "generalization/hasty",
+		"t": "A *broad or universal rule* inferred from too few (or unrepresentative) instances of a class."
+	}, {
+		"id": "Mereological",
+		"n": "Mereological fallacy",
+		"l": "generalization/mereological_fallacy",
+		"t": "A property of a system is attributed to a component, or properties of components are assumed to transfer unchanged to the system, ignoring emergent interactions."
+	}, {
+		"id": "Naturalistic",
+		"n": "Naturalistic fallacy",
+		"l": "generalization/naturalistic_fallacy",
+		"t": "A prescriptive conclusion (*what ought to be*) inferred directly from a descriptive premise (*what is*), or vice versa – without independent justification for the normative leap."
+	}, {
+		"id": "OverwhelmingException",
+		"n": "Overwhelming exception",
+		"l": "generalization/overwhelming_exception",
+		"t": "A *general rule or claim* is stated together with so many or so broad *exceptions* that the original statement is left with little or no meaningful scope, yet is presented as if it were still substantially valid."
+	}, {
+		"id": "Epistemic",
+		"n": "Epistemic fallacy",
+		"l": "knowledge/epistemic_fallacy",
+		"t": "*Knowledge* (or its absence) is equated with *existence*: “we have no evidence for X, therefore X does not exist” – or only what is measurable/knowable is regarded as real, and the limits of knowledge are treated as the limits of reality."
+	}, {
+		"id": "EliminativeInduction",
+		"n": "Fallacy of eliminative induction",
+		"l": "knowledge/eliminative_induction",
+		"t": "A conclusion reached by *eliminating alternatives* is stated as *certain* rather than merely probable, or the initial set of alternatives is not (or cannot be) exhaustive."
+	}, {
+		"id": "Ignorance",
+		"n": "Argument from ignorance",
+		"l": "knowledge/ignorance",
+		"t": "A conclusion about a claim's *truth or existence* is drawn from the *absence of evidence* for or against it – i.e., the *burden of proof* is reversed (e.g., “no one has disproven X, so X is true”; “no one has proven X, so X is false”; “no complaints, so all is well”)."
+	}, {
+		"id": "Ecological",
+		"n": "Ecological fallacy",
+		"l": "knowledge/ecological_fallacy",
+		"t": "A *statistical indicator* (average, rate, share) valid for a *group or population as a whole* is transferred to a *lower level* (subgroup or individual) – as if the group-level figure applied to the parts."
+	}, {
+		"id": "Authority",
+		"n": "Appeal to authority",
+		"l": "relevance/authority/index",
+		"t": "A claim is supported or rejected mainly because of the source’s status or expertise, rather than the evidence itself."
+	}, {
+		"id": "FalseAuthority",
+		"n": "Appeal to a false authority",
+		"l": "relevance/authority/false_authority/index",
+		"t": "The cited source is not a valid authority for the claim: no relevant expertise, anonymous/unverifiable, misquoted, fabricated, or from a field where the claim is contested."
+	}, {
+		"id": "FallacyFallacy",
+		"n": "Fallacy-fallacy",
+		"l": "relevance/fallacy-fallacy",
+		"t": "An *invalid or refuted argument* for a claim is used as evidence that the *claim itself is false* (conflating bad reasoning with a false conclusion)."
+	}, {
+		"id": "FalseDilemma",
+		"n": "False dilemma",
+		"l": "relevance/false_dilemma",
+		"t": "A situation is presented – explicitly or by *redefining* a middle position into one of two poles – as having only a limited number of options when more exist."
+	}, {
+		"id": "AppealToTradition",
+		"n": "Appeal to tradition",
+		"l": "relevance/authority/false_authority/appeal_to_tradition",
+		"t": "A practice or belief defended primarily because it is *old, customary, or “the way things have always been done”* – duration used as proof of correctness."
+	}, {
+		"id": "Bandwagon",
+		"n": "Bandwagon fallacy",
+		"l": "relevance/authority/false_authority/bandwagon_fallacy",
+		"t": "A position supported or rejected primarily because *many people* hold it, do it, or find it popular – majority size used as evidence of truth."
+	}, {
+		"id": "HonourByAssociation",
+		"n": "Honour by association",
+		"l": "relevance/authority/false_authority/honour_by_association",
+		"t": "Credibility or acceptance granted *solely* through positive association with a respected person, brand, or institution – no independent evaluation of the thing itself."
+	}, {
+		"id": "FalseAnalogy",
+		"n": "False analogy",
+		"l": "relevance/false_analogy",
+		"t": "A property of one thing is transferred to another based on their *similarity in other respects*, without establishing that this specific property follows from those shared features."
+	}, {
+		"id": "PetitioPrincipii",
+		"n": "Petitio principii",
+		"l": "relevance/petitio_principii",
+		"t": "A premise silently assumes the conclusion, often by restating it in different words, changing scope, or relying on an unexamined assumption that is itself in dispute."
+	}, {
+		"id": "AppealToConsequences",
+		"n": "Appeal to consequences",
+		"l": "relevance/appeal_to_consequences",
+		"t": "A *factual claim* is argued to be true or false from the *consequences* it would have if it were true or false (“if X is true, bad things follow – so X is false”; “if X were false, good things would follow – so X is true”."
+	}, {
+		"id": "WishfulThinking",
+		"n": "Wishful thinking",
+		"l": "relevance/wishful_thinking/index",
+		"t": "Accepting a claim as true, or treating weak evidence as decisive, simply because truth of the claim is *desirable*."
+	}, {
+		"id": "Arrival",
+		"n": "Arrival fallacy",
+		"l": "relevance/wishful_thinking/arrival_fallacy",
+		"t": "A *current problem* is dismissed or deferred based on an *expected future event* that has little factual basis for resolving it. Special form of ”wishful thinking”."
+	}, {
+		"id": "SlipperySlope",
+		"n": "Slippery slope",
+		"l": "relevance/slippery_slope",
+		"t": "Accepting a position is presented as *inevitably* triggering a chain of further (usually extreme) positions, without evidence that each step follows from the previous one."
+	}]
+}, {
+	"id": "logic",
+	"title": "Logic fallacies",
+	"desc": "Fallacies in formal logical reasoning, also sometimes called ‘formal fallacies’.",
+	"opt": [],
+	"list": [{
+		"id": "AffirmingDisjunct",
+		"n": "Affirming a disjunct",
+		"l": "logic/formal_fallacies/affirming_a_disjunct",
+		"t": "One option of an *inclusive* disjunction (“A or B”) is affirmed, and the other is concluded to be false."
+	}, {
+		"id": "DenyingAntecedent",
+		"n": "Denying the antecedent",
+		"l": "logic/formal_fallacies/denying_the_antecedent",
+		"t": "A conditional (“If P then Q”) is misused: because P does not hold, Q is denied – even though Q could have another cause. (Checkable form: “If P → Q; not-P → ∴ not-Q”)."
+	}, {
+		"id": "DenyingConjunct",
+		"n": "Denying a conjunct",
+		"l": "logic/formal_fallacies/denying_a_conjunct",
+		"t": "One option of a *negated conjunction* (“not both A and B”) is denied, and the other is concluded to be true."
+	}, {
+		"id": "AffirmingConsequent",
+		"n": "Affirming the consequent",
+		"l": "logic/formal_fallacies/affirming_the_consequent",
+		"t": "A conditional (“If P then Q”) is misused: because Q holds, P is affirmed – even though Q could have another cause. (Checkable form: “If P → Q; Q → ∴ P”)."
+	}, {
+		"id": "AffirmativeConclusionNegativePremise",
+		"n": "Affirmative conclusion from a negative premise",
+		"l": "logic/formal_fallacies/affirmative_conclusion_from_negative_premise",
+		"t": "In a formal categorical inference (especially a syllogism), an *affirmative* conclusion (“all … are …”, “some … are …”) is inferred although at least one premise is *negative* (“no …”, “some … are not”)."
+	}, {
+		"id": "NegativeConclusionAffirmativePremises",
+		"n": "Negative conclusion from affirmative premises",
+		"l": "logic/formal_fallacies/negative_conclusion_from_affirmative_premises",
+		"t": "In a formal categorical inference (especially a syllogism), a *negative* conclusion (“no …”, “some … are not”) is inferred although all premises are *affirmative* (“all … are …”, “some … are …”)."
+	}, {
+		"id": "ExclusivePremises",
+		"n": "Fallacy of exclusive premises",
+		"l": "logic/formal_fallacies/exclusive_premises",
+		"t": "In a standard categorical syllogism or comparable form, *all* premises are negative, yet a conclusion is still derived."
+	}, {
+		"id": "UndistributedMiddle",
+		"n": "Undistributed middle",
+		"l": "logic/formal_fallacies/fallacies_of_distribution/undistributed_middle",
+		"t": "In a formal categorical inference (especially a syllogism), the *middle term*, which connects the premises, refers only to a part of its class in all occurrences (typically as predicate of “All X are M”, or within an unqualified “Some …” statement), yet is still used as if it can connect the other terms. (Checkable form: “Some C are M; All P are M → ∴ …P, C…”.)"
+	}, {
+		"id": "IllicitProcess",
+		"n": "Illicit process",
+		"l": "logic/formal_fallacies/fallacies_of_distribution/illicit_process",
+		"t": "In a formal categorical inference (especially a syllogism), the major or minor term occurs in a distributed position (whole-class reference) in the conclusion, yet only in an undistributed position in its premise – i.e., the conclusion makes a broader claim about that class than the premise does. (Checkable form: “All P are M; All M are S → ∴ All S are P” – “S” is broader in the conclusion.)"
+	}, {
+		"id": "FallacyDistribution",
+		"n": "Fallacies of distribution",
+		"l": "logic/formal_fallacies/fallacies_of_distribution/index",
+		"t": "A categorical inference (especially a syllogism) in which the *distribution* of terms is evidently mishandled but does not clearly match either specific rule above – e.g., several distribution errors at once, or a non-standard form where the middle/major/minor roles are hard to assign (enthymemes with elided premises, multi-premise chains). Fallback entry: if the conditions for *undistributed middle* or *illicit process* are met, use those instead."
+	}, {
+		"id": "AmbiguousMiddle",
+		"n": "Ambiguous middle term",
+		"l": "logic/formal_fallacies/four-term_fallacy/ambiguous_middle",
+		"t": "In a syllogism, the middle term shifts meaning between premises (equivocation), so it fails to link the other two terms. (A specific form of the four-term fallacy.)"
+	}, {
+		"id": "FourTerm",
+		"n": "Four-term fallacy",
+		"l": "logic/formal_fallacies/four-term_fallacy/index",
+		"t": "A syllogism contains four distinct terms instead of exactly three – often because a term is used in two different meanings (equivocation). Count meanings, not words."
+	}, {
+		"id": "CircularReasoning",
+		"n": "Circular reasoning",
+		"l": "logic/formal_fallacies/circular_reasoning",
+		"t": "A conclusion is supported by a premise that directly or indirectly depends on that same conclusion, including through a chain of claims that loops back to it."
+	}, {
+		"id": "Existential",
+		"n": "Existential fallacy",
+		"l": "logic/formal_fallacies/existential",
+		"t": "An *existential* conclusion (“some A are B”) drawn from *universal* premises (“all A are B”) that do not establish the class actually exists (vacuously true if A is empty)."
+	}, {
+		"id": "Division",
+		"n": "Fallacy of division",
+		"l": "logic/emergence/division",
+		"t": "A property of the *whole* is inferred to hold for its *parts* (or a group-level property for individual members) – as if the parts must share the whole's property, without checking whether it is *emergent*."
+	}, {
+		"id": "Composition",
+		"n": "Fallacy of composition",
+		"l": "logic/emergence/composition",
+		"t": "A property of the *parts* (components, members) of a system is inferred to hold for the *whole* as well – as if the whole must be the sum of its parts, without checking for emergent or resultant properties."
+	}]
+}, {
+	"id": "rhetoric",
+	"title": "Rhetoric fallacies",
+	"desc": "Fallacies that are typically committed as a rhetoric device. Includes ‘ad-hominem’ attacks.",
+	"opt": ["checked"],
+	"list": [{
+		"id": "NameCalling",
+		"n": "Name-calling",
+		"l": "ad_hominem/name-calling",
+		"t": "Argument dismissed by *insulting*, *berating* or applying derogatory labels to the speaker rather than engaging with their reasoning."
+	}, {
+		"id": "TuQuoque",
+		"n": "Tu quoque",
+		"l": "ad_hominem/tu_quoque",
+		"t": "An accusation of *hypocrisy*: “you do it too” – used to dismiss a valid point because the arguer doesn't practise what they preach."
+	}, {
+		"id": "Nutpicking",
+		"n": "Nutpicking",
+		"l": "ad_hominem/nutpicking",
+		"t": "A *group* is discredited by selectively highlighting its most *extreme*, *fringe*, or *absurd* members as if they were representative of the whole."
+	}, {
+		"id": "BuiltByAssociation",
+		"n": "Guilt by association",
+		"l": "ad_hominem/guilt_by_association",
+		"t": "A person or group is *discredited* because of their associations, affiliations, or connections – not because of the argument itself."
+	}, {
+		"id": "SelfAggrandizement",
+		"n": "Self-aggrandizement",
+		"l": "ad_hominem/self-aggrandizement",
+		"t": "A speaker elevates themselves or their in-group with an *unearned positive label* to implicitly diminish the opponent's capacity or qualification."
+	}, {
+		"id": "AppealToMotive",
+		"n": "Appeal to motive",
+		"l": "ad_hominem/appeal_to_motive",
+		"t": "A claim is dismissed by attributing an *external motive* (interest, bias, emotion) to the *person making it* – explicitly or implied – instead of addressing the substance of the argument."
+	}, {
+		"id": "AdFeminam",
+		"n": "Ad feminam",
+		"l": "ad_hominem/ad_feminam",
+		"t": "Argument dismissed by referencing the speaker's *female sex* – via stereotypes (irrational, emotional), biological insinuations (hormones), or gendered knowledge claims."
+	}, {
+		"id": "AdVirum",
+		"n": "Ad virum",
+		"l": "ad_hominem/ad_virum",
+		"t": "Argument dismissed by referencing the speaker's *male sex* – via stereotypes (privileged, aggressive), demographic identity claims, or blanket exclusion of men from a topic."
+	}, {
+		"id": "AdHominem",
+		"n": "Ad hominem",
+		"l": "ad_hominem/index",
+		"t": "An argument's validity is challenged or undermined by attacking the *person* who makes it – their character, identity, motives, associations, or behaviour – instead of addressing the substance of the claim."
+	}, {
+		"id": "Whataboutism",
+		"n": "Whataboutism",
+		"l": "rhetoric/whataboutism",
+		"t": "A specific criticism is deflected by pointing to *other groups'* similar or worse actions, with the effect of blocking any resolution of the original issue."
+	}, {
+		"id": "Strawman",
+		"n": "Strawman argument",
+		"l": "rhetoric/straw_man",
+		"t": "The opponent's argument or position is *replaced* with a distorted, oversimplified, or fabricated version, and that weaker version is refuted as if it were the original claim."
+	}, {
+		"id": "AppealToEmotion",
+		"n": "Appeal to Emotion",
+		"l": "rhetoric/appeal_to_emotion/index",
+		"t": "A position is supported primarily or exclusively by an appeal to the audience's emotions (pity, fear, outrage, guilt, hope, pride, flattery) rather than by factual arguments."
+	}, {
+		"id": "ArgumentByEmotion",
+		"n": "Argument by Emotion",
+		"l": "rhetoric/appeal_to_emotion/argument_by_emotion",
+		"t": "The speaker's *own* emotional state (hurt, sadness, anger) is used as *pressure* – often inducing guilt – to make the counterpart *concede* or drop a point, rather than as an argument. Specialised form of “appeal to emotion”."
+	}, {
+		"id": "Fearmongering",
+		"n": "Fear-mongering",
+		"l": "rhetoric/appeal_to_emotion/fear-mongering",
+		"t": "A *threat* (real or exaggerated) is framed in *alarmist, fear-inducing terms* that create urgency and present or imply a specific response as the only way to avoid disaster – implicitly equating *deliberation, proportionality, or alternatives* with accepting the risk. Specialised form of “appeal to emotion”."
+	}, {
+		"id": "AdBaculum",
+		"n": "Argumentum ad baculum",
+		"l": "rhetoric/argumentum_ad_baculum",
+		"t": "A *position of power* is used to make the counterpart *concede*: an explicit or implicit *threat of negative consequences* (harm, punishment, loss of benefits, social damage) is used *instead of reasons*."
+	}, {
+		"id": "NoTrueScotsman",
+		"n": "No true Scotsman",
+		"l": "rhetoric/no_true_scotsman",
+		"t": "A universal claim about a *group* is rescued from a counterexample by redefining membership with an *ad hoc* purity criterion (“no *true/real* X…”)."
+	}, {
+		"id": "GishGallop",
+		"n": "Gish gallop",
+		"l": "rhetoric/gish-gallop",
+		"t": "A large number of claims, arguments, or citations presented simultaneously (or in rapid succession) to *overwhelm* the capacity for individual evaluation and rebuttal (of a live opponent, an audience, or subsequent fact-checkers) – quantity over quality."
+	}, {
+		"id": "TonePolicing",
+		"n": "Tone policing",
+		"l": "rhetoric/tone_policing",
+		"t": "An argument's *content* is dismissed or invalidated because of *how* it was expressed – emotional intensity, volume, perceived rudeness – instead of engaging with the substance."
+	}]
 }]
