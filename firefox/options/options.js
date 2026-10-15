@@ -63,11 +63,6 @@ const $opt = {
 					document.getElementById('modelField').value = result.data.model;
 				}
 
-				// decisions model ID
-				if (result.data.decModel.trim() !== '') {
-					document.getElementById('decisionModelField').value = result.data.decModel;
-				}
-
 				// Send key:
 				if (result.data.sendKey !== '') {
 					const keySel = document.getElementById('keySelector');
@@ -261,7 +256,6 @@ const $opt = {
 			type: '',
 			server: '',
 			model: '',
-			decModel: '',
 			apiKey: '',
 			sendKey: '',
 			_valid: false
@@ -281,7 +275,6 @@ const $opt = {
 			/* Model: */
 			if (!skipModel) {
 				r.model = document.getElementById("modelField").value;
-				r.decModel = document.getElementById("decisionModelField").value;
 			}
 	
 			/* sendKey: */

@@ -108,21 +108,13 @@ const $panel = {
 		// focus the query field:
 		document.getElementById('queryField').focus();
 
-		/* Testing the MD parser: REMOVE ME!!!
-		const out = $panel.log.output.start($panel._gGroup, "test", "Title message");
-
-		["This", "is", "a", "test", "."].forEach( t => {
-			$panel.log.output.writeToken(out, t);
-		})
-		$panel.log.output.end(); */
-
 	},
 
 	makeShortlist: function() {
 		//console.info("$panel.makeShortlist()");
 
 		// write a message what's happening:
-		$panel.log.write($panel._gGroup, "Shortlisting:");
+		//$panel.log.write($panel._gGroup, "Shortlisting:");
 
 		let thinkingBubble = null;
 
@@ -138,13 +130,19 @@ const $panel = {
 
 				if (!thinkingBubble) { // create a thinking block
 					thinkingBubble = $panel.log.output.start($panel._gGroup,
-						'llmThought collapsed',
-						"Considering fallacies for the shortlist:");
-					thinkingBubble.onclick = $panel.gui.cb.onExpandableSectionClick;
+						'llmThought',
+						"Shortlisting fallacies",
+						false, true);
 				}
 				$panel.log.output.writeToken(thinkingBubble, thought);
 			},
 			(reason, result, stats) => { // on result
+
+				// close the tinking bubble, if not done yet:
+				if (thinkingBubble) {
+					$panel.log.output.end(thinkingBubble, true);
+					thinkingBubble = null;
+				}
 
 				// try to parse the result to a JSON structure:
 				let json = null;
@@ -163,6 +161,12 @@ const $panel = {
 				if (stats) {
 					$panel.log.writeStats($panel._gGroup, reason, stats);
 				}
+
+				// close it off with a disclaimer:
+				$panel.log.writeDisclaimer();
+
+				// return to interactive mode:
+				$panel.gui.setMode(GuiMode.INTERACTIVE);
 			}
 		)
 	},
@@ -196,7 +200,7 @@ const $panel = {
 
 		},
 		setMode: function(mode) {
-			console.info(`$panel.gui.setMode(${mode})`);
+			//console.info(`$panel.gui.setMode(${mode})`);
 
 			const body = document.getElementsByTagName('body')[0];
 			const cancelBtn = document.getElementById('btnCancel');
@@ -269,7 +273,7 @@ const $panel = {
 
 		},
 		getHeaderOptions: function() {
-			console.info(`$panel.gui.getHeaderOptions()`);
+			// console.info(`$panel.gui.getHeaderOptions()`);
 
 			let r = { // return object (allow for other options to be added!)
 				fGroups: []
@@ -374,7 +378,7 @@ const $panel = {
 
 		},
 
-		write: function(parent, msg, cls = null, setActive = false) {
+		write: function(parent, msg, cls = null) {
 			//console.info(`$panel.log.write("${msg}", ${cls}, ${setActive})`);
 			
 			let atList = null;
@@ -382,10 +386,6 @@ const $panel = {
 				atList = { class: cls };
 			}
 			const p = HTMLElement.new('p', atList, msg);
-
-			if (setActive) {
-				$panel.log.setActive(p, true);
-			}
 
 			$panel.log.append(parent, p);
 
@@ -474,7 +474,7 @@ const $panel = {
 			// create the list
 			const ul = HTMLElement.new('UL');
 			json.candidates.forEach( (it) => {
-				console.log("Shortlist item:", it, it.confidence);
+				//console.log("Shortlist item:", it, it.confidence);
 
 				const info = $panel.fallacies.getInfoFor(it.fallacy);
 				if (!info) {
@@ -493,6 +493,15 @@ const $panel = {
 			// add to the parent:
 			parent.appendChild(container);
 
+		},
+
+		// should be called at the end of each process.
+		writeDisclaimer: function() {
+			const main = document.getElementsByTagName('main')[0];
+
+			$panel.log.write(main,
+				"Responses are AI-generated. Verify before relying on them.",
+				'disclaimer');
 		},
 
 		/* grouping element */
@@ -532,41 +541,125 @@ const $panel = {
 		output: {
 
 			/* start a new output section */
-			start: function(parent, classes, message = null) {
+			start: function(parent, classes, title, makeOpen, makeBusy) {
 				console.group(`$panel.log.output.start()`);
 
-				const output = HTMLElement.new('div', {class: classes});
-				if (message) {
-					$panel.log.output.writeToken(output, message);
-					$panel.log.output.writeToken(output, "\n"); // new line
+				const opt = {
+					class: classes + ( makeBusy ? ' busy' : '')
+				}
+				if (makeOpen) {
+					opt.open= 'open';
 				}
 
-				// add it to the log:
-				parent.appendChild(output);
-
-				return output;
+				return parent.appendNew('DETAILS', opt,
+					HTMLElement.new('SUMMARY', null, title)
+				);
 			},
 
 			/* write a token to output section */
-			writeToken: function(div, token) {
-
-				// store a state object in the div element:
-				/*if (!div._mdState) {
-					div._mdState = {
-						atLineStart: true,   // we're at the beginning of a new line
-						block: null,         // current <p> or <li> element
-						inlineStack: [],     // open <em>/<strong>/<code> elements (innermost last)
-					};
+			writeToken: function(group, token) {
+				// console.log(`$panel.log.output.writeToken(“${token}”)`);
+				
+				// combined tokens get split and called into this function recursively:
+				const split = token.split(/(\*{1,2}|`)/).filter(Boolean);
+				if (split.length > 1) {
+					split.forEach( sub => $panel.log.output.writeToken(group, sub) ); // function calls itself
+					return;
 				}
-				const state = div._mdState;*/
 
-				div.append(token); // todo: parse MD
+				// store the parsing context in the DOM element:
+				if (!group._mdContext) {
+					group._mdContext = {
+						newLine: true,
+						intermediate: null,
+						currentBlock: null,
+						inlineStack: []
+					}
+				}
+				const s = group._mdContext;
 
+				// replace inline arrows::
+				token = token.replaceAll("$\rightarrow$", "→");
+				token = token.replaceAll(" -> ", "⟶");
+
+				// trimmed version of the token:
+				const t = token.trim();
+
+				//console.log('"' + token.replaceAll("\n", "\\n").replaceAll('"', '\"')+ '", ');
+
+				// internal function to map prefix spaces to a class name:
+				function indentClass(token) {
+					return 'level' + Math.floor(token.search(/\S/) / 3)
+				}
+				
+				try {
+				
+					// block-level elements:
+					if (s.newLine) { // we start a new line:
+						s.intermediate = null;
+						s.currentBlock = group.appendNew('P');
+						s.newLine = false;
+					}
+
+					// Check for an end of the line first
+					if ((/\n+\s*/g).test(token)) { // end of line
+						//console.log(" - start a new block");
+						s.newLine = true;
+						return;
+					}
+
+					// get either the block or inline element to insert to:
+					let target = ( s.inlineStack.length == 0 ? s.currentBlock : s.inlineStack.at(-1) );
+
+					if (target) { // we have a target!
+
+						// scroll it to view:
+						//group.scrollIntoView({behaviour: "smooth", block: "end", container: "nearest"});
+
+						// inline elements:
+						if (t == '**') { // Bold
+							if (target.nodeName == 'STRONG') { // end of "bold":
+								s.inlineStack.pop(); // remove the last item
+							} else {
+								s.inlineStack.push(target.appendNew('STRONG'));
+							}
+						} else if (t == '*') { // Italic
+							if (target.nodeName == 'EM') { // end of "italic":
+								s.inlineStack.pop(); // remove the last item
+							} else {
+								s.inlineStack.push(target.appendNew('EM'));
+							}
+						} else if (t == '`') { // Code
+							if (target.nodeName == 'CODE') { // end of "code":
+								s.inlineStack.pop(); // remove the last item
+							} else {
+								s.inlineStack.push(target.appendNew('CODE'));
+							}
+						} else {
+							target.append(token);
+						}
+					} else {
+						throw new Error("No current block!");
+					}
+
+				} catch(err) {
+					console.warn(`Could not process token “${token}”: ${err.message}`);
+				}
 			},
 
 			/* end of output section: */
-			end: function() {
+			end: function(group, collapse = false) {
 				console.groupEnd();
+				
+				delete group._mdContext; // remove context information
+				
+				// remove busy class:
+				group.classList.remove('busy');
+
+				// close the item, if it was open:
+				if (collapse) {
+					group.removeAttribute('open');
+				}
 			}
 		},
 
@@ -752,7 +845,7 @@ const $panel = {
 
 		// get information about a specific fallacy:
 		getInfoFor: function(id) {
-			console.info(`$panel.assets.fallacies.getInfoFor("${id}")`);
+			//console.info(`$panel.assets.fallacies.getInfoFor("${id}")`);
 
 			let r = null;
 
@@ -942,8 +1035,8 @@ const $panel = {
 
 					// create a thinking bubble, if needed:
 					if (!thinkingBubble) {
-						thinkingBubble = $panel.log.output.start($panel._gGroup, 'llmThought');
-						thinkingBubble.onclick = $panel.gui.cb.onExpandableSectionClick;
+						thinkingBubble = $panel.log.output.start($panel._gGroup, 'llmThought', "Thinking");
+						//thinkingBubble.onclick = $panel.gui.cb.onExpandableSectionClick;
 					}
 					$panel.log.output.writeToken(thinkingBubble, thought);
 				},
@@ -951,7 +1044,7 @@ const $panel = {
 
 					// create a thinking bubble, if needed:
 					if (!responseBubble) {
-						responseBubble = $panel.log.output.start($panel._gGroup, 'llmOutput', false);
+						responseBubble = $panel.log.output.start($panel._gGroup, 'llmOutput', "Thinking");
 					}
 					// collapse the thinking bubble, as we now have the real deal:
 					if (thinkingBubble) {
@@ -1159,7 +1252,7 @@ const $panel = {
 								console.warn("Skipped parsing partial chunk: ", cleanedLine);
 							}
 						} else {
-							//$panel.log.output.write(out, token);
+							//$panel.log.output.writeToken(out, token);
 							console.log('cleanedLine:', cleanedLine);
 						}
 					}
