@@ -110,7 +110,7 @@ const $panel = {
 
 	},
 
-	makeShortlist: function() {
+	makeShortlist: function(whenDone = null) {
 		//console.info("$panel.makeShortlist()");
 
 		// write a message what's happening:
@@ -167,8 +167,54 @@ const $panel = {
 
 				// return to interactive mode:
 				$panel.gui.setMode(GuiMode.INTERACTIVE);
+
+				// return the shortlist:
+				if (whenDone) whenDone(json);
 			}
 		)
+	},
+
+	checkFallacies: function() {
+		console.info("$panel.checkFallacies()");
+
+		// step 1: make a shortlist:
+		//$panel.makeShortlist( (shortlist) => {
+
+			// speed up testing by providing typical shortlist data here:
+			const shortlist = [
+				{	"quote": "The transatlantic community of shared interests has sustained and protected us",
+					"fallacy": "Hypostatization",
+					"confidence": 0.9 },
+				{	"quote": "Their goal is not just the destruction of Israel and all Jews",
+					"fallacy": "Teleological",
+					"confidence": 0.85 },
+				{	"quote": "...the destruction of Israel and all Jews",
+					"fallacy": "GenericGeneralization",
+					"confidence": 0.9 },
+				{	"quote": "Nothing — no agreement, no appeal for peace, no presidential handshake — has so far been able to stop it.",
+					"fallacy": "FalseDilemma",
+					"confidence": 0.85 },
+				{	"quote": "The only thing we really know is that... we know only a fraction of the truth.",
+					"fallacy": "Epistemic",
+					"confidence": 0.75 },
+				{	"quote": "...they murder dissidents — most recently, apparently more than 30,000 of them in a matter of days.",
+					"fallacy": "HastyGeneralization",
+					"confidence": 0.7 }
+			];
+
+			// combine data with fallacy info:
+			shortlist.forEach( it => {
+				it._info = $panel.fallacies.getInfoFor(it.fallacy);
+
+				// load more data:
+				if (!it._info.page) {
+					$panel.fallacies._asyncLoadFallacyInfo(it, () => {
+						console.log(it);
+					})
+				}
+			})
+
+		//});
 	},
 
 	gui: {
@@ -302,20 +348,14 @@ const $panel = {
 			},
 			onShortlistButtonClick: function(e) {
 				//console.info("$panel.gui.cb.onShortlistButtonClick()");
-				
-				/*const opt = $panel.gui.getHeaderOptions();
-				console.log($panel.fallacies.getMDTable(opt));
-
-				console.log($panel.fallacies.getListOfIDs(opt));
-
-				console.log($panel.fallacies.getInfoFor('Ignorance'));*/
 
 				$panel.makeShortlist();
 
 			},
 			onCheckButtonClick: function(e) {
 				console.info("$panel.gui.cb.onCheckButtonClick()");
-				console.warn("Not implemented yet!");
+				
+				$panel.checkFallacies();
 			},
 
 			onQueryFieldKeyDown: function(e) {
@@ -346,13 +386,8 @@ const $panel = {
 					$panel.ai.sendUserMessage(text);
 				}
 				return false;
-			},
-			onExpandableSectionClick: function(e) {
-				//console.info("$panel.gui.cb.onExpandableSectionClick()");
-
-				const trg = ( e.target || e.srcElement );
-				trg.classList.toggle('collapsed');
 			}
+		
 		}
 	},
 
@@ -804,7 +839,7 @@ const $panel = {
 
 		/* Returns an MD table of fallacies, filtered by groups (array) */
 		getMDTable: function(filter) {
-			console.info("$panel.assets.fallacies.getMDTable()", filter);
+			//console.info("$panel.assets.fallacies.getMDTable()", filter);
 
 			let md = '| ID | Trigger |\n'
 					 + "| -- | ------- |\n";
@@ -825,7 +860,7 @@ const $panel = {
 
 		/* Returns an array of fallacy IDs, filtered by groups */
 		getListOfIDs: function(filter) {
-			console.info("$panel.assets.fallacies.getListOfIDs()", filter);
+			//console.info("$panel.assets.fallacies.getListOfIDs()", filter);
 
 			r = [];
 
@@ -889,6 +924,37 @@ const $panel = {
 
 			} catch (err) {
 				$panel._globalError = "Failed to load list of fallacies from internal assets.";
+			}
+		},
+
+		/* load more information on a specific fallacy: */
+		_asyncLoadFallacyInfo: async function(item, whenDone) {
+			console.info("$panel.assets._asyncLoadFallacyInfo()");
+			//console.log(item);
+
+			const url = `https://ad.hominem.info/check/${item._info.l}.md`;
+			console.log("Url:", url);
+
+			try {
+				const req = await fetch(url);
+
+				if (!req.ok) {
+					throw new Error(`Response status: ${req.status}`);
+				}
+
+				const page = await req.text();
+
+				if (page && page.length > 0) {
+					item._page = page;
+				} else {
+					throw new Error("Invalid response.");
+				}
+
+			} catch (err) {
+				console.error(err);
+				$panel._globalError = `Failed to load description for fallacy: “${item.n}”: ${err.message}`;
+			} finally {
+				if (whenDone) whenDone(item);
 			}
 		}
 	},
@@ -1036,7 +1102,6 @@ const $panel = {
 					// create a thinking bubble, if needed:
 					if (!thinkingBubble) {
 						thinkingBubble = $panel.log.output.start($panel._gGroup, 'llmThought', "Thinking");
-						//thinkingBubble.onclick = $panel.gui.cb.onExpandableSectionClick;
 					}
 					$panel.log.output.writeToken(thinkingBubble, thought);
 				},
