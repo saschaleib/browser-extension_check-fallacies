@@ -65,7 +65,7 @@
 		"t": "A term is swapped for another co-referring term referring to the same object, even though the two terms carry different associated meanings or modes of reference (e.g., “morning star” vs. “evening star”)."
 	}, {
 		"id": "FalseCause",
-		"n": "False cause fallacy",
+		"n": "False cause",
 		"l": "causality/false_cause",
 		"t": "*Causation* inferred from mere *co-occurrence* or *temporal sequence* of two phenomena – without independent evidence for a causal mechanism."
 	}, {
@@ -274,7 +274,7 @@
 	"id": "rhetoric",
 	"title": "Rhetoric fallacies",
 	"desc": "Fallacies that are typically committed as a rhetoric device. Includes ‘ad-hominem’ attacks.",
-	"opt": ["checked"],
+	"opt": [],
 	"list": [{
 		"id": "NameCalling",
 		"n": "Name-calling",

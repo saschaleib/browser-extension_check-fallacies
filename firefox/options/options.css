@@ -40,7 +40,7 @@ main {
 				margin: 0;
 				border: none;
 			}
-			#modelsButton, #decisionModelsButton {
+			#modelsButton, #decisionButton {
 				& {
 					width: 1.5em;
 					overflow: hidden;
@@ -59,7 +59,7 @@ main {
 			#serverField, #apiKeyField {
 				min-width: 16em;
 			}
-			#modelSelector {
+			#modelSelector, #decisionSelector {
 				display: none;
 			}
 	 }

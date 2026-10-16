@@ -23,10 +23,6 @@ body {
 		grid-template-rows: min-content auto min-content;
 	}
 	header, footer {
-		& {
-			background-color: light-dark(#F8F8F9, #2F2F34);
-			overflow: hidden;
-		}
 		button {
 			& {
 				appearance: none;
@@ -58,6 +54,10 @@ body {
 		}
 	}
 	header {
+		& {
+			background-color: light-dark(#F8F8F9, #2F2F34);
+			overflow: hidden;
+		}
 		#toolbar {
 			& {
 				visibility: hidden;
@@ -124,8 +124,7 @@ body {
 			padding: .25em;
 			font-size: smaller;
 			line-height: 1.5;
-			border: light-dark(#E7E7E8, #343339) solid;
-			border-width: 1px 0;
+			border-top: light-dark(#E7E7E8, #343339) solid 1px;;
 			overflow: hidden auto;
 		}
 		& > * {
@@ -253,9 +252,9 @@ body {
 		}
 		.llmOutput {
 			& {
-				display: grid;
+				/*display: grid;
 				grid-template-columns: 0 auto;
-				align-items: end;
+				align-items: end;*/
 				background-color: light-dark(#EAEAF0, #383f3f);
 				color: light-dark(#000, #FFF);
 				border-radius: 1em;
@@ -264,14 +263,16 @@ body {
 				margin: .25em 1.5em .25em 1em;
 				box-shadow: .5px .5px 1px light-dark(#0002, #000C);
 			}
-			&::before {
+			/*&::before {
 				content: '';
+				display: block;
 				position: relative;
 				width: 1em; height: 1em;
 				background-color: light-dark(#EAEAF0, #383f3f);
 				mask: url("data:image/svg+xml,%3Csvg viewBox='0 0 64 64' xmlns='http://www.w3.org/2000/svg'%3E%3Cg%3E%3Cpath d='M 64,54 0,64 64,0 Z' /%3E%3C/g%3E%3C/svg%3E") left top no-repeat;
 				left: -1.67em;
-			}
+				top: .5em;
+			}*/
 		}
 		.shortlist {
 			& {
@@ -324,16 +325,41 @@ body {
 				}
 			}
 		}
-		.disclaimer {
-			background-color: light-dark(#FFE, #221);
-			border: light-dark(#EDA, #981) solid 1px;
-			border-radius: .75em;
-			margin: 0 0 0 1rem;
+		.pageInfo {
+			& {
+				display: grid;
+				grid-template-columns: max-content auto;
+				gap: .25em;
+				background-color: light-dark(#F8F8F9, #2F2F34);
+				border: light-dark(#E7E7E8, #343339) solid 1px;
+				border-radius: .5em;
+				margin: 0 .5rem;
+				font-size: x-small;
+				padding: .25em;
+			}
+			dt {
+				font-weight: bold;
+				white-space: nowrap;
+			}
+			dd {
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+			}
 		}
 	}
 	footer {
+		& > p {
+			font-size: x-small;
+			text-align: center;
+			border-bottom: light-dark(#E7E7E8, #343339) solid 1px;
+			color: light-dark(#E00, #FE0);
+			padding: .25em;
+		}
 		form {
 			& {
+				background-color: light-dark(#F8F8F9, #2F2F34);
+				overflow: hidden;
 				visibility: hidden;
 				height: 0;
 				display: grid;
@@ -353,7 +379,7 @@ body {
 					min-height: calc(1em + 4px);
 					max-height: 6.5em;
 					background-color: transparent;
-					color: light-dark(#38383D, #B1B1B3);
+					color: light-dark(#38383D, #99A);
 					border-radius: .25em;
 					padding: .25em;
 				}

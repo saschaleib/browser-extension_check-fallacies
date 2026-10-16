@@ -9,8 +9,14 @@ const $opt = {
 		// assign callbacks:
 		document.getElementById('modelSelector')
 			.addEventListener('change', $opt.onModelsListChange);
+
+		document.getElementById('decisionSelector')
+			.addEventListener('change', $opt.onModelsListChange);
 		
 		document.getElementById('modelsButton')
+			.addEventListener('click', $opt.onModelsButtonClick);
+
+		document.getElementById('decisionButton')
 			.addEventListener('click', $opt.onModelsButtonClick);
 
 		document.getElementById('testButton')
@@ -39,7 +45,7 @@ const $opt = {
 				}
 
 				// Server type:
-				if (result.data.type !== '') {
+				if (result.data.type && result.data.type !== '') {
 					const typeSel = document.getElementById('typeSelector');
 					for (var i = 0; i < typeSel.options.length; i++) {
 						if (typeSel.options[i].text== result.data.type.trim()) {
@@ -49,22 +55,27 @@ const $opt = {
 				}
 
 				// API Endpoint:
-				if (result.data.server.trim() !== '') {
+				if (result.data.server && result.data.server.trim() !== '') {
 					document.getElementById('serverField').value = result.data.server;
 				}
 
 				// API Key
-				if (result.data.apiKey.trim() !== '') {
+				if (result.data.apiKey && result.data.apiKey.trim() !== '') {
 					document.getElementById('apiKeyField').value = result.data.apiKey;
 				}
 
 				// model ID
-				if (result.data.model.trim() !== '') {
+				if (result.data.model && result.data.model.trim() !== '') {
 					document.getElementById('modelField').value = result.data.model;
 				}
 
+				// decision model ID
+				if (result.data.decision && result.data.decision.trim() !== '') {
+					document.getElementById('decisionField').value = result.data.decision;
+				}
+
 				// Send key:
-				if (result.data.sendKey !== '') {
+				if (result.data.sendKey && result.data.sendKey !== '') {
 					const keySel = document.getElementById('keySelector');
 					for (var i = 0; i < keySel.options.length; i++) {
 						if (keySel.options[i].text== ( result.data.sendKey|| 'Ctrl').trim ()) {
@@ -86,29 +97,24 @@ const $opt = {
 
 		// find the model selection popup:
 		const popupId = ( trg ? trg.getAttribute('data-popup') : null);
-		var modelSel = null;
-		if (popupId && popupId !== '') {
-			modelSel = document.getElementById(popupId);
-		};
+		const modelSel = ( (popupId && popupId !== '') ? document.getElementById(popupId) : null );
 		if (!modelSel) {
-			console.log(`Could not find popup with ID ${popupId}.`);
+			console.warn(`Could not find popup with ID ${popupId}.`);
 			return;
 		}
 		// find the model field:
 		const fieldId = ( trg ? trg.getAttribute('data-field') : null);
-		var modelField = null;
-		if (fieldId && fieldId !== '') {
-			modelField = document.getElementById(popupId);
-		};
+		const modelField = ( (fieldId && fieldId !== '') ? document.getElementById(fieldId) : null );
 		if (!modelField) {
 			console.log(`Could not find field with ID ${modelField}.`);
 			return;
 		}
 
+		// read the other form data (skip model!)
 		const data = $opt._readFormData(true);
 		if (data._valid) {
 
-			// get the old valud first:
+			// store the old value:
 			const oldVal = modelField.value;
 			
 			// clear the existing list:
@@ -121,11 +127,12 @@ const $opt = {
 				const result = await $opt._getModelsList(data);
 				if (result._valid) {
 
-					$opt.setInfo('info', "List of models retrieved successfully. Click on “Test” to validate the model.");
+					$opt.setInfo('info', "List of models retrieved successfully.");
 
 					// first add an empty item:
 					const empty = document.createElement('OPTION');
 					empty.setAttribute('value', '');
+					empty.textContent = "(none)"
 					modelSel.appendChild(empty);
 
 					// add all found models:
@@ -220,12 +227,20 @@ const $opt = {
 	onModelsListChange: function(e) {
 		console.info("$opt.onModelsListChange()");
 
-		if (this.value !== '') {
-			const modelText = document.getElementById('modelField');
-			modelText.value = this.value;
-			modelText.style.display = 'initial';
-			this.style.display = 'none';
+		// get the target:
+		const trg = ( e.target || e.srcElement );
+
+		// find the related text field:
+		const fieldId = ( trg ? trg.getAttribute('data-field') : null);
+		const modelField = ( (fieldId && fieldId !== '') ? document.getElementById(fieldId) : null );
+		if (!modelField) {
+			console.log(`Could not find field with ID ${modelField}.`);
+			return;
 		}
+
+		modelField.value = this.value;
+		modelField.style.display = 'initial';
+		this.style.display = 'none';
 	},
 	
 	setInfo: function(type, message) {
@@ -256,6 +271,7 @@ const $opt = {
 			type: '',
 			server: '',
 			model: '',
+			decision: '',
 			apiKey: '',
 			sendKey: '',
 			_valid: false
@@ -275,6 +291,7 @@ const $opt = {
 			/* Model: */
 			if (!skipModel) {
 				r.model = document.getElementById("modelField").value;
+				r.decision = document.getElementById("decisionField").value;
 			}
 	
 			/* sendKey: */

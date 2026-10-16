@@ -13,7 +13,7 @@
 				<p class="main">
 					<label for="typeSelector"><abbr>API</abbr> Type:</label>
 					<select id="typeSelector" name="type" class="detail-actions">
-						<option value="lmstudio">LM Studio</option>
+						<option value="openai">OpenAI compatible</option>
 					</select>
 				</p>
 				<p class="info">
@@ -44,12 +44,36 @@
 					<label for="modelSelector">Model:</label>
 					<span class="select-button">
 						<input id="modelField" type="text" placeholder="click button to load →" value="">
-						<select id="modelSelector" name="model" class="model-list"></select>
+						<select id="modelSelector" name="model" class="model-list" data-field="modelField"></select>
 						<button id="modelsButton" title="reload" data-popup="modelSelector" data-field="modelField"><span>Load models</span></button>
 					</span>
 				</p>
 				<p class="info">
 					Click on the “Reload” [⟲] button to fetch a list of available AI models.
+				</p>
+			</div>
+			<div class="detail-row">
+				<p class="main">
+					<label for="decisionSelector">Decision model:</label>
+					<span class="select-button">
+						<input id="decisionField" type="text" placeholder="(optional)" value="">
+						<select id="decisionSelector" name="model" class="model-list" data-field="decisionField"></select>
+						<button id="decisionButton" title="reload" data-popup="decisionSelector" data-field="decisionField"><span>Load models</span></button>
+					</span>
+				</p>
+				<p class="info">
+					Assigning a specialised ‘decisions’ model can speed up the <em>shortlisting</em> task. Leave empty to use the default model.
+				</p>
+			</div>
+			<div class="detail-row">
+				<p class="main">
+					<label for="thresholdField">Shortlisting threshold (%):</label>
+					<input id="thresholdField" type="number" min="1" max="100" value="25">
+				</p>
+				<p class="info">
+					Decision threshold for <em>shortlisting</em>.
+					Lower values means more fallacies are examined,
+					but process is also slower (has no effect on default model).
 				</p>
 			</div>
 			<div class="detail-row">
@@ -71,7 +95,7 @@
 			</p>
 			<p class="buttonLayout">
 				<button id="testButton" type="button">Test</button>
-				<button id="saveButton" type="submit" disabled>Save</button>
+				<button id="saveButton" type="submit">Save</button>
 			</p>
 		</footer>
 		<script src="options.js"></script>
