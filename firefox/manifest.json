@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Check Fallacies",
-  "version": "0.1.1",
+  "version": "0.2.3",
   "description": "Check the article you are reading for fallacies, using your own AI.",
   "homepage_url": "https://github.com/saschaleib/browser-extension_check-fallacies",
   "icons": {
@@ -14,6 +14,7 @@
   "permissions": ["activeTab", "scripting", "storage", "webRequest"],
   "web_accessible_resources": [{
     "resources": [
+      "/assets/first-run.html",
       "/assets/list-of-fallacies.json",
       "/assets/prompts.json"
     ],
@@ -33,7 +34,6 @@
   },
 
   "background": {
-    "service_worker": "background.js",
     "scripts": ["background.js"]
   },
   
@@ -50,8 +50,8 @@
 
   "browser_specific_settings": {
     "gecko": {
-      "id": "check-fallacies@ad.hominem.info",
-      "strict_min_version": "128.0",
+      "id": "@check-fallacies",
+      "strict_min_version": "142.0",
       "data_collection_permissions": {
         "required": ["none"]
       }

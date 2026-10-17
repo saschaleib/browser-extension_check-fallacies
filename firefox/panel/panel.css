@@ -333,7 +333,6 @@ body {
 				background-color: light-dark(#F8F8F9, #2F2F34);
 				border: light-dark(#E7E7E8, #343339) solid 1px;
 				border-radius: .5em;
-				margin: 0 .5rem;
 				font-size: x-small;
 				padding: .25em;
 			}

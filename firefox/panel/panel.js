@@ -76,10 +76,11 @@ const $panel = {
 	},
 
 	/* after all is done, enter interactive mode: */
-	goInteractive: function(oldGroup) {
-		console.info("$panel.goInteractive()");
+	goInteractive: function() {
+		//console.info("$panel.goInteractive()");
 
-		// start a new group:
+		// close any existing groups and start a new one:
+		$panel.log.group.end($panel._gGroup, true);
 		$panel._gGroup = $panel.log.group.start(null, "Interactive", false);
 
 		// initialize interactive mode:
@@ -104,7 +105,7 @@ const $panel = {
 		const filter = $panel.gui.getHeaderOptions(); // user settings in panel header
 
 		// callback for thinking tokens:
-		function onThinkingToken(t) {
+		function onThinkingToken(thought) {
 
 			if (!thinkingBubble) { // create a thinking block
 				thinkingBubble = $panel.log.output.start($panel._gGroup,
@@ -144,9 +145,6 @@ const $panel = {
 					$panel.log.writeStats($panel._gGroup, reason, stats);
 				}
 
-				// close it off with a disclaimer:
-				$panel.log.writeDisclaimer();
-
 				// return to interactive mode:
 				$panel.gui.setMode(GuiMode.INTERACTIVE);
 
@@ -164,9 +162,6 @@ const $panel = {
 			if (stats) {
 				$panel.log.writeStats($panel._gGroup, 'stop', stats);
 			}
-
-			// close it off with a disclaimer:
-			$panel.log.writeDisclaimer();
 
 			// return to interactive mode:
 			$panel.gui.setMode(GuiMode.INTERACTIVE);
@@ -197,46 +192,66 @@ const $panel = {
 	},
 
 	checkFallacies: function() {
-		console.info("$panel.checkFallacies()");
+		//console.info("$panel.checkFallacies()");
 
-		// step 1: make a shortlist:
-		//$panel.makeShortlist( (shortlist) => {
+		// end any group, if one is already open and start a new one:
+		$panel.log.group.end($panel._gGroup, true);
+		$panel._gGroup = $panel.log.group.start(null, "Checking fallacies", true);
 
-			// speed up testing by providing typical shortlist data here:
-			const shortlist = [
-				{	"quote": "The transatlantic community of shared interests has sustained and protected us",
-					"fallacy": "Hypostatization",
-					"confidence": 0.9 },
-				{	"quote": "Their goal is not just the destruction of Israel and all Jews",
-					"fallacy": "Teleological",
-					"confidence": 0.85 },
-				{	"quote": "...the destruction of Israel and all Jews",
-					"fallacy": "GenericGeneralization",
-					"confidence": 0.9 },
-				{	"quote": "Nothing — no agreement, no appeal for peace, no presidential handshake — has so far been able to stop it.",
-					"fallacy": "FalseDilemma",
-					"confidence": 0.85 },
-				{	"quote": "The only thing we really know is that... we know only a fraction of the truth.",
-					"fallacy": "Epistemic",
-					"confidence": 0.75 },
-				{	"quote": "...they murder dissidents — most recently, apparently more than 30,000 of them in a matter of days.",
-					"fallacy": "HastyGeneralization",
-					"confidence": 0.7 }
-			];
+		// load the current page content:
+		$panel.page.extractContent( (page) => {
 
-			// combine data with fallacy info:
-			shortlist.forEach( it => {
-				it._info = $panel.fallacies.getInfoFor(it.fallacy);
+			// if error, show it and go interactive:
+			if ($panel.hasGlobalError()) {
+				setTimeout($panel.goInteractive, 1000); // return to interactive mode
+				return;
+			}
 
-				// load more data:
-				if (!it._info.page) {
-					$panel.fallacies._asyncLoadFallacyInfo(it, () => {
-						console.log(it);
-					})
-				}
-			})
+			// next: let's make a shortlist: (FOR DEBUGGING, SOME TEST DATA:)
+			//$panel.makeShortlist( (shortlist) => {
 
-		//});
+				// speed up testing by providing typical shortlist data here:
+				const shortlist = [
+					{	"fallacy": "Hypostatization",
+						"quote": "The transatlantic community of shared interests has sustained and protected us",
+						"confidence": 0.9 },
+					{	"fallacy": "Teleological",
+						"quote": "Their goal is not just the destruction of Israel and all Jews",
+						"confidence": 0.85 },
+					{	"fallacy": "GenericGeneralization",
+						"quote": "...the destruction of Israel and all Jews",
+						"confidence": 0.9 },
+					{	"fallacy": "FalseDilemma",
+						"quote": "Nothing — no agreement, no appeal for peace, no presidential handshake — has so far been able to stop it.",
+						"confidence": 0.85 },
+					{	"fallacy": "Epistemic",
+						"quote": "The only thing we really know is that... we know only a fraction of the truth.",
+						"confidence": 0.75 },
+					{	"fallacy": "HastyGeneralization",
+						"quote": "...they murder dissidents — most recently, apparently more than 30,000 of them in a matter of days.",
+						"confidence": 0.7 }
+				];
+
+				$panel.log.write($panel._gGroup, "Checking shortlisted fallacies:");
+
+				// combine data with fallacy info:
+				shortlist.forEach( it => {
+					it._info = $panel.fallacies.getInfoFor(it.fallacy);
+					$panel.log.write($panel._gGroup, `- ${it._info.n}:`);
+
+					// load more data:
+					if (!it._info.page) {
+						// first load the detail page
+						$panel.fallacies._asyncLoadFallacyInfo(it, () => {
+							// then call the AI:
+							$panel.ai.asyncCheckFallacy();
+						})
+					} else { // otherwise: directly call the AI:
+						$panel.ai.asyncCheckFallacy();
+					}
+				});
+			//});
+		});
 	},
 
 	gui: {
@@ -311,7 +326,7 @@ const $panel = {
 			}
 		},
 		updateHeaderOptions: function() {
-			console.info(`$panel.gui.updateHeaderOptions()`);
+			//console.info(`$panel.gui.updateHeaderOptions()`);
 
 			const panel = document.getElementById('optionspanel');
 			const fallaciesGroups = $panel.fallacies.getGroups();
@@ -354,6 +369,14 @@ const $panel = {
 
 			return r;
 		},
+		// to be called when the extension is run for the first time:
+		firstRun: function() {
+			console.info("$panel.gui.firstRun()");
+
+			$panel._globalError = "This extension has not been configured yet. "
+						+ "Please open the extensions settings panel and configure the AI server that you want to use. ";
+
+		},
 
 		/* callback functions: */
 		cb: {
@@ -375,7 +398,7 @@ const $panel = {
 
 			},
 			onCheckButtonClick: function(e) {
-				console.info("$panel.gui.cb.onCheckButtonClick()");
+				//console.info("$panel.gui.cb.onCheckButtonClick()");
 				
 				$panel.checkFallacies();
 			},
@@ -397,7 +420,7 @@ const $panel = {
 
 			},
 			onSendButtonClick: function(e) {
-				console.info("$panel.gui.cb.onSendButtonClick()");
+				//console.info("$panel.gui.cb.onSendButtonClick()");
 				e.preventDefault();
 
 				// get the text to send:
@@ -448,42 +471,6 @@ const $panel = {
 			p.scrollIntoView({behaviour: "smooth", block: "end", container: "nearest"});
 
 			return p;
-		},
-
-		writeMarkdown: function(parent, mdText, cls = null) {
-			console.info("$panel.log.writeMarkdown()");
-
-			var html = '';
-
-			// a simple hacky MD parser:
-			const paras = mdText.split("\n\n");
-			paras.forEach( (p) => {
-
-				let pHtml = null;
-
-				// headlines:
-				if (p.startsWith('#')) {
-					const match = (/^(#+) (.*)$/g).exec(p);
-					if (match && match.length > 1) {
-						const headline = match[2];
-						const level = match[1].length;
-						pHtml = `<h${level}>${headline}</h${level}>`;
-					}
-				} else {
-					// todo: parse inline styles!
-					pHtml = '<p>' + p + '</p>';
-				}
-
-				html += pHtml;
-
-			})
-
-			const classes = 'markdown' + ( cls ? ` ${cls}` : '' );
-
-			const div = HTMLElement.new('DIV', {class: classes});
-			div.innerHTML = html;
-
-			parent.appendChild(div);
 		},
 
 		error: function(parent, msg) {
@@ -544,20 +531,16 @@ const $panel = {
 		},
 
 		writePageInfo: function(parent, page) {
-			console.info("$panel.log.writePageInfo()", page);
+			//console.info("$panel.log.writePageInfo()");
 
 			const ul = parent.appendNew('DL', {class: 'pageInfo'}, [
 				HTMLElement.new('DT', null, "Title:"),
 				HTMLElement.new('DD', null, page.title),
 				HTMLElement.new('DT', null, "URL:"),
 				HTMLElement.new('DD', null, page.url),
-				HTMLElement.new('DT', null, "Length:"),
-				HTMLElement.new('DD', null, page.length.toString()),
 				HTMLElement.new('DT', null, "Language:"),
 				HTMLElement.new('DD', null, (new Intl.DisplayNames(['en'], {type: 'language'})).of(page.lang))
 			]);
-
-
 		},
 
 		/* grouping element */
@@ -729,24 +712,15 @@ const $panel = {
 		writeStats: function(parent, stopReason, stats) {
 			console.info("$panel.log.writeStats()", stopReason, stats);
 
-			let reasonStr = '';
-			switch (stopReason) {
-				case 'stop':
-					reasonStr = "End token found";
-					break;
-				default:
-					reasonStr = `[${stopReason}]`;
-			}
-
 			// "rejected_draft_tokens_count":86}
-			let statsStr = `Finished. Reason: ${reasonStr}. Tokens: ${stats.total_draft_tokens_count}`;
+			let statsStr = `Finished. Reason: ‘${stopReason}’. Tokens: ${stats.total_tokens}`;
 
 			$panel.log.write(parent, statsStr, 'info');
 
 		},
 
 		setActive: function(element, isBusy = false) {
-			console.info("$panel.log.setActive()", isBusy);
+			//console.info("$panel.log.setActive()", isBusy);
 			
 			// clear busy from all other elements:
 			var busyList = $panel.log._main.getElementsByClassName('active');
@@ -775,8 +749,10 @@ const $panel = {
 				// update the log line:
 				$panel.log.appendText(p, ( valid ? "OK." : "failed!" ));
 
+				if (!valid) {
+					$panel.gui.firstRun();
+				}
 				callback(); // next step!
-
 			});
 		},
 
@@ -820,8 +796,7 @@ const $panel = {
 
 			// no settings found?
 			if (typeof valid == 'undefined') {
-				valid = false;
-				$panel._globalError = "Please configure your AI server in the extension preferences first!";
+				valid = false; // no or invalid settings!
 			}
 
 			return valid;
@@ -831,7 +806,7 @@ const $panel = {
 	// internal list of fallacies and all related functions:
 	fallacies: {
 		init: function(whenDone) {
-			console.info("$panel.fallacies.init()");
+			//console.info("$panel.fallacies.init()");
 
 			const p = $panel.log.write($panel._gGroup, "Loading list of fallacies: ");
 
@@ -953,7 +928,7 @@ const $panel = {
 
 		/* Load the JSON list of fallacies from the internal assets */
 		_asyncLoadFallacies: async function(whenDone) {
-			console.info("$panel.assets._asyncLoadFallacies()");
+			//console.info("$panel.assets._asyncLoadFallacies()");
 
 			// return object (primed for "not found")
 			let r = {
@@ -980,12 +955,9 @@ const $panel = {
 
 		/* load more information on a specific fallacy: */
 		_asyncLoadFallacyInfo: async function(item, whenDone) {
-			console.info("$panel.assets._asyncLoadFallacyInfo()");
-			//console.log(item);
+			// console.info("$panel.assets._asyncLoadFallacyInfo()");
 
 			const url = `https://ad.hominem.info/check/${item._info.l}.md`;
-			console.log("Url:", url);
-
 			try {
 				const req = await fetch(url);
 
@@ -1013,12 +985,11 @@ const $panel = {
 	/* information about the loaded page: */
 	page: {
 		extractContent: function(callback) {
-			console.info("$panel.page.extractContent()");
+			//console.info("$panel.page.extractContent()");
 
 			var p = null;
 
-			if ($panel.page._page) {
-				p = $panel.log.write($panel._gGroup, "Reusing previously extracted page content.");
+			if ($panel.page._page) { // we already have the content
 				callback({
 					valid: true,
 					error: null,
@@ -1075,7 +1046,7 @@ const $panel = {
 		},
 
 		_extractMainArticle: async function(p, callback) {
-			console.info("$panel.page._extractMainArticle()");
+			//console.info("$panel.page._extractMainArticle()");
 
 			try {
 				const api = globalThis.browser ?? globalThis.chrome;
@@ -1347,9 +1318,10 @@ const $panel = {
 										}
 									}
 								} else {
-									console.log("Nothing to log in response:", parsed);
+									console.log("Nothing to log in response:", jsonString);
 								}
 							} catch (e) {
+								console.log(e);
 								// Silently skip partial or malformed chunk boundaries
 								console.warn("Skipped parsing partial chunk: ", cleanedLine);
 							}
@@ -1535,6 +1507,12 @@ const $panel = {
 			} catch(err) {
 				$panel._globalError = "Could not create shortlist: " + err.message;
 			}
+		},
+
+		asyncCheckFallacy: async function() {
+			// console.info("$panel.ai.asyncCheckFallacy()");
+
+
 		}
 	}
 }
