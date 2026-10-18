@@ -48,7 +48,7 @@ const $opt = {
 				if (result.data.type && result.data.type !== '') {
 					const typeSel = document.getElementById('typeSelector');
 					for (var i = 0; i < typeSel.options.length; i++) {
-						if (typeSel.options[i].text== result.data.type.trim()) {
+						if (typeSel.options[i].value== result.data.type.trim()) {
 							typeSel.options[i].selected = true;
 						}
 					}
@@ -102,6 +102,7 @@ const $opt = {
 			console.warn(`Could not find popup with ID ${popupId}.`);
 			return;
 		}
+
 		// find the model field:
 		const fieldId = ( trg ? trg.getAttribute('data-field') : null);
 		const modelField = ( (fieldId && fieldId !== '') ? document.getElementById(fieldId) : null );
@@ -109,6 +110,9 @@ const $opt = {
 			console.log(`Could not find field with ID ${modelField}.`);
 			return;
 		}
+
+		const myId = ( trg ? trg.getAttribute('id') : null);
+		const isDecision = ( myId == 'decisionButton' ); // is ti the "decision model" button?
 
 		// read the other form data (skip model!)
 		const data = $opt._readFormData(true);
@@ -124,7 +128,7 @@ const $opt = {
 
 			// load the list of models:
 			(async () => {
-				const result = await $opt._getModelsList(data);
+				const result = await $opt._getModelsList(data, isDecision);
 				if (result._valid) {
 
 					$opt.setInfo('info', "List of models retrieved successfully.");
@@ -135,16 +139,20 @@ const $opt = {
 					empty.textContent = "(none)"
 					modelSel.appendChild(empty);
 
+					// sort the list first:
+					const list = result.list
+						.sort( (a, b) => a.n.localeCompare(b.n) );
+
 					// add all found models:
 					let found = false;
-					result.list.forEach(model => {
+					list.forEach(model => {
 						const opt = document.createElement('OPTION');
 						opt.setAttribute('value', model.id);
 						if (model.id == oldVal) {
 							opt.setAttribute('selected', 'selected');
 							found = true;
 						}
-						opt.textContent = model.id + ( model.loaded ? ' *' : '');
+						opt.textContent = model.n;
 						modelSel.appendChild(opt);
 					});
 
@@ -225,7 +233,7 @@ const $opt = {
 	},
 
 	onModelsListChange: function(e) {
-		console.info("$opt.onModelsListChange()");
+		// console.info("$opt.onModelsListChange()");
 
 		// get the target:
 		const trg = ( e.target || e.srcElement );
@@ -244,7 +252,7 @@ const $opt = {
 	},
 	
 	setInfo: function(type, message) {
-		console.info("$opt.setInfo()", type, message);
+		//console.info("$opt.setInfo()", type, message);
 
 		const kClasses = ['info', 'error']; // possible types
 		
@@ -310,8 +318,36 @@ const $opt = {
 		}
 	},
 
-	_getModelsList: async function(data) {
-		console.info("$opt._getModelsList()");
+	_getServerError: function(raw) {
+		//console.info("$opt._getServerError()");
+
+		let r = 'Server error';
+
+		if (raw.startsWith('{') && raw.endsWith('}')) { // it is a JSON error message
+			try {
+				const json = JSON.parse(raw);
+				//console.log(json);
+	
+				if (json.error && json.error.message) {
+					r = json.error.message;
+					if (json.error.metadata) {
+						if (json.error.metadata.raw) {
+							r += ': ' + json.error.metadata.raw;
+							if (json.error.metadata.remedy_hint) {
+								r += ' – hint: ' + json.error.metadata.remedy_hint;
+							}
+						}
+					}
+				}
+			} catch (e) {
+				r = raw;
+			}
+		}
+		return r;
+	},
+
+	_getModelsList: async function(data, decisionOnly = false) {
+		console.info(`$opt._getModelsList(decisionOnly = ${decisionOnly})`);
 		//console.log(data);
 
 		// return object:
@@ -322,37 +358,38 @@ const $opt = {
 		}
 		
 		// get the end point for listing models:
-		let ep = 'models';
-		if (data.type == 'ollama') {
-			ep = 'tags';
-		}
+		let ep = 'models'; // TODO: Other endpoints!
 
 		// compose the URL to fetch from:
 		let url = data.server
 			+ (data.server.substr(-1) !== '/' ? '/' : '' ) + ep;
 
+		// openrouter uses a specialized URL for decision models:
+		if (decisionOnly && data.type == 'openrouter') {
+			url += '?output_modalities=decisions&input_modalities=text';
+		}
+		console.log(url);
+
 		// fetch the list of models:
 		try {
 			const response = await fetch(url);
 			if (!response.ok) {
-				throw new Error(`Response status: ${response.status}`);
+				const msg = $opt._getServerError(await response.text());
+				throw new Error(`Connection failed with status ${response.status} (${msg})`);
 			}
 
 			// load the response:
 			const result = await response.json();
 			//console.log(result);
 
-			// clean the list:
-			//if (data.type == 'ollama' && 
-
-			if (result.object == 'list' && Array.isArray(result.data)) {
+			// loop the list:
+			if (Array.isArray(result.data)) {
 
 				result.data.forEach(it => {
-					if (it.id && it.object && it.object == 'model') {
-
+					if (it.id) {
 						r.list.push({
-							id: it.id
-							// TODO: other information here?
+							id: it.id,
+							n: ( it.name ? it.name : it.id )
 						});
 					}
 				})
@@ -363,7 +400,7 @@ const $opt = {
 			}
 
 		} catch (err) {
-			r._error = "Error: " + err.response;
+			r._error = "Error: " + err;
 		}
 
 		return r;
@@ -382,9 +419,7 @@ const $opt = {
 		
 		// set the end point for testing the model:
 		let ep = 'chat/completions';
-		if (data.type == 'ollama') {
-			ep = 'generate';
-		}
+		// TODO: Other endpoints
 
 		// compose the URL to fetch from:
 		let url = data.server
@@ -403,7 +438,7 @@ const $opt = {
 		// request body:
 		let body = {
 			"model": data.model,
-			"messages": [{"role": "user", "content": ""}],
+			"messages": [{"role": "user", "content": "Say 'hi!'"}],
 			"max_tokens": 1,
 			"stream": false
 		}
@@ -411,7 +446,7 @@ const $opt = {
 
 		// Create a timeout controller and set a 10-second timeout
 		const controller = new AbortController();
-		const timeoutId = setTimeout(() => controller.abort(), 20000);
+		const timeoutId = setTimeout(() => controller.abort(), 60000);
 		
 		try { // send the request:
 
@@ -419,13 +454,14 @@ const $opt = {
 				method: 'POST',
 				headers: headers,
 				body: JSON.stringify(body),
-        signal: controller.signal // connect the abort controller
+        		signal: controller.signal // connect the abort controller
 			});
 
 			clearTimeout(timeoutId); // response -> clear timeout
 
 			if (response.status !== 200) { // network error?
-				throw new Error(`Connection failed with status ${response.status} (${response.statusText})`);
+				const msg = $opt._getServerError(await response.text());
+				throw new Error(`Connection failed with status ${response.status} (${msg})`);
 			}
 
 			// load the response:

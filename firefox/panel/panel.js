@@ -59,9 +59,9 @@ const $panel = {
 	_globalError: null, // global error
 
 	hasGlobalError: function() {
-		//console.info(`$panel.hasGlobalError() -> ${$panel._globalError}.`);
+		//console.info(`$panel.hasGlobalError() -> ‘${$panel._globalError}’.`);
 
-		var hasError = ( $panel._globalError && $panel._globalError !== '');
+		var hasError = ( $panel._globalError && ( $panel._globalError !== ''));
 
 		if (hasError) {
 			// log the error:
@@ -92,7 +92,7 @@ const $panel = {
 	},
 
 	makeShortlist: function(whenDone = null) {
-		//console.info("$panel.makeShortlist()");
+		console.info("$panel.makeShortlist()");
 
 		// write a message what's happening:
 		//$panel.log.write($panel._gGroup, "Shortlisting:");
@@ -119,41 +119,36 @@ const $panel = {
 
 		// callbacks for result parsing:
 		function onResult(reason, result, stats) {
-			console.log(" (onResult())", result, typeof result);
+			//console.log(" (onResult())", result, typeof result);
 
-				// close the tinking bubble, if not done yet:
-				if (thinkingBubble) {
-					$panel.log.output.end(thinkingBubble, true);
-					thinkingBubble = null;
-				}
+			// close the tinking bubble, if not done yet:
+			if (thinkingBubble) {
+				$panel.log.output.end(thinkingBubble, true);
+				thinkingBubble = null;
+			}
 
-				// try to parse the result to a JSON structure:
-				let json = null;
-				try {
-					json = JSON.parse(result);
-				} catch(err) {
-					console.error(err);
-					console.log(result);
-					$panel._globalError = "Error parsing result: " + err.message;
-				}
+			// make sure we actually have a JSON object:
+			if (result && typeof result == 'object' && result.candidates) {
+				$panel.log.writeShortlistTable($panel._gGroup, result.candidates);
+			} else {
+				$panel._globalError = "Unexpected result type";
+				console.warn(result);
+				$panel.hasGlobalError();
+			}
 
-				if (json) {
-					$panel.log.writeShortlistTable($panel._gGroup, json.candidates);
-				}
+			if (stats) {
+				$panel.log.writeStats($panel._gGroup, reason, stats);
+			}
 
-				if (stats) {
-					$panel.log.writeStats($panel._gGroup, reason, stats);
-				}
+			// return to interactive mode:
+			$panel.gui.setMode(GuiMode.INTERACTIVE);
 
-				// return to interactive mode:
-				$panel.gui.setMode(GuiMode.INTERACTIVE);
-
-				// return the shortlist:
-				if (whenDone) whenDone(json);
+			// return the shortlist:
+			if (whenDone) whenDone(json);
 		}
 
 		function onDecision(result, stats) {
-			console.log(" (onDecision())", result, stats);
+			//console.log(" (onDecision())", result, stats);
 
 			if (result) {
 				$panel.log.writeShortlistTable($panel._gGroup, result);
@@ -170,6 +165,15 @@ const $panel = {
 			if (whenDone) whenDone(result);
 		}
 
+		// callback in case of error:
+		function onError() {
+			// handle global error state:
+			$panel.hasGlobalError();
+
+			// return to INTERACTIVE mode
+			$panel.gui.setMode(GuiMode.INTERACTIVE);
+		};
+
 		// load the page content first:
 		$panel.page.extractContent( () => {
 
@@ -181,13 +185,10 @@ const $panel = {
 
 			// depending on the settings, use the normal, or the "decisions" model:
 			if (settings.decision && settings.decision.trim() !== '') {
-				$panel.ai.asyncShortlistDecisionModel(settings, filter, onDecision);
+				$panel.ai.asyncShortlistDecisionModel(settings, filter, onDecision, onError);
 			} else { // no decision model available
-				$panel.ai.asyncShortlistDefaultModel(settings, filter, onThinkingToken, onResult);
+				$panel.ai.asyncShortlistDefaultModel(settings, filter, onThinkingToken, onResult, onError);
 			}
-
-			// cancel if an error occured:
-			if ($panel.hasGlobalError()) return; // return doesn't do anything here, but should be left for later
 		});
 	},
 
@@ -208,10 +209,10 @@ const $panel = {
 			}
 
 			// next: let's make a shortlist: (FOR DEBUGGING, SOME TEST DATA:)
-			//$panel.makeShortlist( (shortlist) => {
+			$panel.makeShortlist( (shortlist) => {
 
 				// speed up testing by providing typical shortlist data here:
-				const shortlist = [
+				/*const shortlist = [
 					{	"fallacy": "Hypostatization",
 						"quote": "The transatlantic community of shared interests has sustained and protected us",
 						"confidence": 0.9 },
@@ -230,27 +231,30 @@ const $panel = {
 					{	"fallacy": "HastyGeneralization",
 						"quote": "...they murder dissidents — most recently, apparently more than 30,000 of them in a matter of days.",
 						"confidence": 0.7 }
-				];
+				];*/
 
+				$panel.log.setActive($panel._gGroup, false); // group item is no longer active!
 				$panel.log.write($panel._gGroup, "Checking shortlisted fallacies:");
 
 				// combine data with fallacy info:
 				shortlist.forEach( it => {
 					it._info = $panel.fallacies.getInfoFor(it.fallacy);
-					$panel.log.write($panel._gGroup, `- ${it._info.n}:`);
+					const p = $panel.log.write($panel._gGroup, it._info.n, 'check-headline busy');
 
 					// load more data:
 					if (!it._info.page) {
 						// first load the detail page
 						$panel.fallacies._asyncLoadFallacyInfo(it, () => {
+							$panel.log.write($panel._gGroup, "Loaded detail page, checking if applicable:");
 							// then call the AI:
-							$panel.ai.asyncCheckFallacy();
+							$panel.ai.asyncCheckFallacy(it, t => console.write(t));
 						})
 					} else { // otherwise: directly call the AI:
-						$panel.ai.asyncCheckFallacy();
+						$panel.log.write($panel._gGroup, "Detail page already in memory, checking if applicable:");
+						$panel.ai.asyncCheckFallacy(it, t => console.write(t));
 					}
 				});
-			//});
+			});
 		});
 	},
 
@@ -430,6 +434,10 @@ const $panel = {
 					field.value = ''; // empty the field
 					$panel.ai.sendUserMessage(text);
 				}
+
+				// check for error:
+				$panel.hasGlobalError();
+
 				return false;
 			}
 		
@@ -616,7 +624,6 @@ const $panel = {
 				if (!group._mdContext) {
 					group._mdContext = {
 						newLine: true,
-						intermediate: null,
 						currentBlock: null,
 						inlineStack: []
 					}
@@ -630,27 +637,20 @@ const $panel = {
 				// trimmed version of the token:
 				const t = token.trim();
 
-				//console.log('"' + token.replaceAll("\n", "\\n").replaceAll('"', '\"')+ '", ');
-
-				// internal function to map prefix spaces to a class name:
-				function indentClass(token) {
-					return 'level' + Math.floor(token.search(/\S/) / 3)
-				}
-				
 				try {
 				
-					// block-level elements:
-					if (s.newLine) { // we start a new line:
-						s.intermediate = null;
-						s.currentBlock = group.appendNew('P');
-						s.newLine = false;
-					}
-
 					// Check for an end of the line first
 					if ((/\n+\s*/g).test(token)) { // end of line
 						//console.log(" - start a new block");
 						s.newLine = true;
 						return;
+					}
+
+					// block-level elements:
+					if (s.newLine) { // we start a new line:
+						//console.log(" - new para:", token);
+						s.currentBlock = group.appendNew('P');
+						s.newLine = false;
 					}
 
 					// get either the block or inline element to insert to:
@@ -659,7 +659,7 @@ const $panel = {
 					if (target) { // we have a target!
 
 						// scroll it to view:
-						//group.scrollIntoView({behaviour: "smooth", block: "end", container: "nearest"});
+						target.scrollIntoView({behaviour: "smooth", block: "end", container: "nearest"});
 
 						// inline elements:
 						if (t == '**') { // Bold
@@ -712,8 +712,27 @@ const $panel = {
 		writeStats: function(parent, stopReason, stats) {
 			console.info("$panel.log.writeStats()", stopReason, stats);
 
-			// "rejected_draft_tokens_count":86}
-			let statsStr = `Finished. Reason: ‘${stopReason}’. Tokens: ${stats.total_tokens}`;
+			// start the output string:
+			let statsStr = `Finished. Reason: ‘${stopReason}’.`;
+
+			// get or calculate the tokens:
+			let tokens = 0;
+			if (stats.total_tokens) {
+				tokens = stats.total_tokens;
+			} else if (stats.input_tokens && stats.output_tokens) {
+				tokens = stats.input_tokens  + stats.output_tokens;
+			}
+			if (tokens > 0) {
+				statsStr += ` Tokens: ${tokens}.`;
+			}
+
+			let cost = 0.0;
+			if (stats.cost) {
+				cost = stats.cost;
+			}
+			if (cost > 0) {
+				statsStr += ` Cost: ${cost}.`;
+			}
 
 			$panel.log.write(parent, statsStr, 'info');
 
@@ -880,10 +899,10 @@ const $panel = {
 		
 		},
 
-		getPredicateMap: function(filter) {
+		getPredicateMap: function(filter, ApiType) {
 			//console.info("$panel.assets.fallacies.getPredicateMap()", filter);
 
-			r = [];
+			r = ( ApiType == 'openrouter' ? {} : [] );
 
 			// todo: load from prompts file:
 			const instruction = "Does the text commit this fallacy?";
@@ -892,11 +911,26 @@ const $panel = {
 			$panel.fallacies._list.forEach( grp => {
 				if (filter.fGroups.includes(grp.id)) { // only if group is selected
 					grp.list.forEach( fallacy => {
-						r.push({
-							type: "predicate",
-							name: fallacy.id, // echoed back in the answer
-							instructions: `${instruction} “${fallacy.n}”: "${fallacy.t}"`
-						});
+
+						switch (ApiType) { // different formats per API type
+							case 'openrouter':
+								r[fallacy.id] = {
+									type: "noul",
+									instructions: `Does the text commit this fallacy? '${fallacy.n}': "${fallacy.t}"`,
+									criteria: {
+										true:  `The text contains an instance of '${fallacy.n}'.`,
+										false: `The text does not contain '${fallacy.n}'.`
+									}
+								};
+								break;
+
+							default: // OpenAI compatible
+								r.push({
+									type: "predicate",
+									name: fallacy.id, // echoed back in the answer
+									instructions: `${instruction} “${fallacy.n}”: "${fallacy.t}"`
+								});
+						}
 					});
 				}
 				
@@ -1183,7 +1217,10 @@ const $panel = {
 						$panel.gui.setMode(GuiMode.INTERACTIVE);
 					})
 				.then( (valid) => {
-					console.log("Sending is complete, but we are still waiting for an answer.");
+					if (!$panel.hasGlobalError()) {
+						console.log("Sending is complete, but we are still waiting for an answer.");
+					}
+					$panel.gui.setMode(GuiMode.INTERACTIVE); // return to interactive mode!
 				});
 			});
 		},
@@ -1192,15 +1229,12 @@ const $panel = {
 
 			// determine the end point name for the request
 			let endpoint = 'chat/completions';
-			if (settings.type == 'ollama') {
-				endpoint = 'generate';
-			}
 
 			// compose the URL to fetch from:
 			let url = settings.server
 				+ (settings.server.substr(-1) !== '/' ? '/' : '' )
 				+ endpoint;
-			//console.log(url);
+			//console.log("Url:", url);
 
 			// compose the payload:
 			const payload = {
@@ -1221,7 +1255,7 @@ const $panel = {
 					content: usrMsg
 				});
 			}
-			console.log('payload:', payload);
+			//console.log('payload:', payload);
 
 			// request headers:
 			let headers = {
@@ -1242,11 +1276,13 @@ const $panel = {
 				if (response.ok) {
 					$panel.ai._readResponse(response, onThinkingToken, onResponseToken, onFinished);
 				} else {
-					console.error("Could not establish connection with the AI server.")
+					const errMsg = $panel.ai._getServerError(await response.text());
+					throw new Error(`Error #${response.status}: ${errMsg} (${url})`);
 				}
 
 			} catch(err) {
-				console.log(err);
+				console.error(err);
+				$panel._globalError = err.message;
 			}
 		},
 
@@ -1334,17 +1370,24 @@ const $panel = {
 		},
 
 		/* similar to asyncRequestCheck and asyncSend, but uses a decision model for shortlisting */
-		asyncShortlistDecisionModel: async function(settings, options, onResult) {
+		asyncShortlistDecisionModel: async function(settings, options, onResult, onError) {
 			//console.info("$panel.ai.asyncShortlistDecisionModel()");
 			//console.log(settings, options);
 
-			// determine the end point name for the request
-			let endpoint = 'decisions'; // TODO: other?
+			// select the URL to connect:
+			let url = '';
+			switch (settings.type) {
 
-			// compose the URL to fetch from:
-			let url = settings.server
-				+ (settings.server.substr(-1) !== '/' ? '/' : '' )
-				+ endpoint;
+				case 'openrouter': // OpenRouter non-standard endpoint:
+					url = settings.server.split('v1')[0] + 'alpha/decisions';
+					break;
+
+				// TODO: Other types!
+
+				default: // default is OpenAI compatible API
+					url = (settings.server.substr(-1) !== '/' ? settings.server + '/' : settings.server )
+							+ 'decisions';
+			}
 			//console.log(url);
 
 			// request headers:
@@ -1357,12 +1400,27 @@ const $panel = {
 			//console.log('headers:', headers);
 
 			// compose the payload:
-			const payload = {
-				model: settings.decision,
-				input: $panel.page.getText(),
-				questions: $panel.fallacies.getPredicateMap(options)
-			};
-			//console.log('payload:', payload);
+			let payload = '';
+			switch (settings.type) {
+
+				case 'openrouter': // OpenRouter non-standard endpoint:
+					payload = {
+						model: settings.decision,
+						state: $panel.page.getText(),
+						questions: $panel.fallacies.getPredicateMap(options, settings.type)
+					};
+					break;
+
+				// TODO: Other types!
+
+				default: // default is OpenAI compatible API
+					payload = {
+						model: settings.decision,
+						input: $panel.page.getText(),
+						questions: $panel.fallacies.getPredicateMap(options, settings.type)
+					};
+			}
+			//console.log(JSON.stringify(payload));
 
 			try {
 				const response = await fetch(url, {
@@ -1373,43 +1431,53 @@ const $panel = {
 				});
 
 				if (!response.ok) { // error handling
-					const errMsg = await response.text();
-					try {
-						const errJson = JSON.parse(errMsg);
-						if (errJson.error.message) {
-							$panel.log.error($panel.log._main, errJson.error.message);
-							return;
-						} else {
-							throw new Error(errMsg);
-						}
-					} catch (err) {
-						throw new Error(`${response.status} ${err.message}`);
-					}
+					const errMsg = $panel.ai._getServerError(await response.text());
+					throw new Error(`Error #${response.status}: ${errMsg} (${url})`);
 				}
 
 				const result = await response.json();
 
-				const list = result.answers
-					.filter(a => a.type === "predicate" && a.probability > 0.25)
+				// OpenRouter returns the results as objects, so they should be converted into an array:
+				//console.log((typeof result.answers), result);
+				let answers = null;
+				if (typeof result.answers == 'object') {
+					answers = Object.keys(result.answers).map( (key, value) => {
+						return {
+							type: 'predicate',
+							probability: result.answers[key].noul,
+							name: key
+						}
+					});
+				} else if (Array.prototype.isPrototypeOf(result.answers)) {
+					answers = result.answers;
+				}
+
+				// create the actual shortlist by removing everything  below a threshold
+				const shortlist = answers
+					.filter(a => a.type === 'predicate' && a.probability > 0.25)
 					.sort((a, b) => b.probability - a.probability)
 					.map(a => ({ fallacy: a.name, confidence: a.probability }));
 
-				onResult(list, result.usage); // callback function
+				// done, now call the callback function with the results:
+				onResult(shortlist, result.usage); // callback function
 
 			} catch(err) {
 				console.error(err);
-				$panel._globalError = "Could not create shortlist: " + err.message;
+				$panel._globalError = err.message;
+				onError(err.message);
 			}
 		},
 
 		/* similar to asyncSend, but requests a check of multiple questions */
-		asyncShortlistDefaultModel: async function(settings, filter, onThinkingToken, onResult) {
-			// console.info("$panel.ai.asyncShortlistDefaultModel()");
+		asyncShortlistDefaultModel: async function(settings, filter, onThinkingToken, onResult, onError) {
+			console.info("$panel.ai.asyncShortlistDefaultModel()");
 
 			let resultStr = ''; // result string
 
+			const controller = new AbortController();
+			const signal = controller.signal;
 			// determine the end point name for the request
-			let endpoint = 'chat/completions'; // TODO: other?
+			let endpoint = 'chat/completions'; // TODO: other endpoints?
 
 			const idArray = $panel.fallacies.getListOfIDs(filter);
 			//console.log(idArray);
@@ -1432,7 +1500,7 @@ const $panel = {
 			let url = settings.server
 				+ (settings.server.substr(-1) !== '/' ? '/' : '' )
 				+ endpoint;
-			//console.log(url);
+			console.log(url);
 
 			// request headers:
 			let headers = {
@@ -1451,7 +1519,7 @@ const $panel = {
 					{ role: 'user', content: usrPrompt }
 				],
 				temperature: 0,
-				reasoning_effort: 'medium',
+				reasoning_effort: 'low',
 				response_format: {
 					type: 'json_schema',
 					json_schema: {
@@ -1487,32 +1555,72 @@ const $panel = {
 			try {
 				const response = await fetch(url, {
 					method: "POST",
-					headers: { "Content-Type": "application/json" },
+					signal: signal,
+					headers: headers,
 					body: JSON.stringify(payload)
 				});
 
-				if (response.ok) {
-					$panel.ai._readResponse(response, onThinkingToken, responseToken => {
-						resultStr += responseToken;
-					}, (reason, stats) => {
-
-						console.log("$panel.ai._stats:", $panel.ai._stats);
-
-						onResult(reason, resultStr, stats);
-					});
-				} else {
-					console.error("Could not establish connection with the AI server.")
+				if (!response.ok) {
+					const errMsg = $panel.ai._getServerError(await response.text());
+					throw new Error(`Error #${response.status}: ${errMsg} (${url})`);
 				}
 
+				$panel.ai._readResponse(response, onThinkingToken, responseToken => {
+					resultStr += responseToken;
+				}, (reason, stats) => {
+					console.log("$panel.ai._stats:", $panel.ai._stats);
+
+					try {
+						const results = JSON.parse(resultStr);
+						onResult(reason, results, stats);
+					} catch (jsonErr) {
+						console.error(`Could not parse result: “${jsonErr.message}.`);
+						onResult(reason, resultStr, stats);
+					}
+
+				});
+
 			} catch(err) {
-				$panel._globalError = "Could not create shortlist: " + err.message;
+				controller.abort();
+				console.error(err);
+				$panel._globalError = err.message;
+				onError(err.message);
 			}
 		},
 
-		asyncCheckFallacy: async function() {
-			// console.info("$panel.ai.asyncCheckFallacy()");
+		asyncCheckFallacy: async function(item, callback) {
+			console.info("$panel.ai.asyncCheckFallacy()");
+			console.log(item);
 
 
+		},
+
+		_getServerError: function(raw) {
+			console.info("$panel.ai._getServerError()");
+
+			let r = 'Server error';
+
+			if (raw.startsWith('{') && raw.endsWith('}')) { // it is a JSON error message
+				try {
+					const json = JSON.parse(raw);
+					//console.log(json);
+		
+					if (json.error && json.error.message) {
+						r = json.error.message;
+						if (json.error.metadata) {
+							if (json.error.metadata.raw) {
+								r += ': ' + json.error.metadata.raw;
+								if (json.error.metadata.remedy_hint) {
+									r += ' – hint: ' + json.error.metadata.remedy_hint;
+								}
+							}
+						}
+					}
+				} catch (e) {
+					r = raw;
+				}
+			}
+			return r;
 		}
 	}
 }
