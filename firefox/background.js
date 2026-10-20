@@ -7,5 +7,5 @@ api.action.onClicked.addListener(async (tab) => {
 
   } catch (err) {
 		console.error("Failed to call sidebar: " + err);
-  }
+	}
 });

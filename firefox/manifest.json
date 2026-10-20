@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Check Fallacies",
-  "version": "0.2.3",
+  "version": "0.3.0",
   "description": "Check the article you are reading for fallacies, using your own AI.",
   "homepage_url": "https://github.com/saschaleib/browser-extension_check-fallacies",
   "icons": {

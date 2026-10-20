@@ -82,7 +82,7 @@
 		"id": "HastyGeneralization",
 		"n": "Hasty generalization",
 		"l": "generalization/hasty",
-		"t": "A *broad or universal rule* inferred from too few (or unrepresentative) instances of a class."
+		"t": "A *broad or universal* rule or insight os inferred from too few, or unrepresentative, instances of a class."
 	}, {
 		"id": "Mereological",
 		"n": "Mereological fallacy",
@@ -142,7 +142,7 @@
 		"id": "AppealToTradition",
 		"n": "Appeal to tradition",
 		"l": "relevance/authority/false_authority/appeal_to_tradition",
-		"t": "A practice or belief defended primarily because it is *old, customary, or “the way things have always been done”* – duration used as proof of correctness."
+		"t": "A practice or belief defended primarily because it is *old*, *customary*, or “the way things have always been done” – duration used as proof of correctness."
 	}, {
 		"id": "Bandwagon",
 		"n": "Bandwagon fallacy",

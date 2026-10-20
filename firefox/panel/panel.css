@@ -372,12 +372,21 @@ body {
 		}
 	}
 	footer {
-		& > p {
-			font-size: x-small;
-			text-align: center;
-			border-bottom: light-dark(#E7E7E8, #343339) solid 1px;
-			color: light-dark(#E00, #FE0);
-			padding: .25em;
+		p.disclaimer {
+			& {
+				font-size: x-small;
+				text-align: center;
+				border-bottom: light-dark(#E7E7E8, #343339) solid 1px;
+				color: light-dark(#E00, #FE0);
+				padding: .25em;
+			}
+			a:link, a:visited {
+				color: light-dark(#E00, #FE0);
+				text-decoration: none;
+			}
+			a:hover {
+				text-decoration: underline;
+			}
 		}
 		form {
 			& {
